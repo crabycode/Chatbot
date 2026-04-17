@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="bg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title ? `${title} | ${appName}` : appName %></title>
+    <script>
+      (() => {
+        try {
+          const savedTheme = localStorage.getItem("cybreach-appearance");
+          const systemPrefersDark =
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const theme =
+            savedTheme === "dark" || savedTheme === "light"
+              ? savedTheme
+              : systemPrefersDark
+                ? "dark"
+                : "light";
+
+          document.documentElement.dataset.theme = theme;
+        } catch {
+          document.documentElement.dataset.theme = "light";
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>

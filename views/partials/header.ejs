@@ -1,0 +1,31 @@
+<header class="topbar">
+  <div>
+    <p class="topbar-kicker">Cybersecurity Training chatbot</p>
+    <h1 class="topbar-title"><%= appName %></h1>
+  </div>
+
+  <div class="topbar-actions">
+    <button
+      type="button"
+      class="ghost-button theme-toggle"
+      data-theme-toggle
+      aria-label="Switch appearance"
+      aria-pressed="false"
+    >
+      <span class="theme-toggle-prefix">Тема:</span>
+      <span class="theme-toggle-label" data-theme-label>Dark mode</span>
+    </button>
+
+    <% if (currentUser) { %>
+    <nav class="topbar-nav">
+      <a href="/dashboard" class="ghost-link">Начало</a>
+      <a href="/report" class="ghost-link">Отчет</a>
+      <form method="post" action="/logout">
+        <button type="submit" class="ghost-button">Изход</button>
+      </form>
+    </nav>
+    <% } %>
+  </div>
+</header>
+
+<main class="page-shell">

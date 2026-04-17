@@ -1,0 +1,43 @@
+<%- include("partials/head", { title: "Login" }) %>
+<%- include("partials/header") %>
+
+<section class="auth-layout">
+  <div class="hero-copy">
+    <h2>Обучи служителите си да разпознават атаки от тип социално инженерство чрез реалистичен чат със CYBREACH</h2>
+    <p>
+      След вход в системата всеки служител преминава през серия от чат сценарии, а системата отчита резултатите, броя правилни решения и общия риск индекс.
+    </p>
+
+    <div class="info-panel">
+      <h3>Как да влезете?</h3>
+      <p><strong>Потребителско име:</strong> [име].[фамилия]</p>
+      <p><strong>Парола:</strong> [предоставената ви парола]</p>
+    </div>
+  </div>
+
+  <div class="panel auth-panel">
+    <div class="panel-heading">
+      <h2>Вход в тестовата платформа</h2>
+    </div>
+
+    <% if (error) { %>
+    <div class="alert alert-fail"><%= error %></div>
+    <% } %>
+
+    <form method="post" action="/login" class="form-stack">
+      <label>
+        <span>Потребителско име:</span>
+        <input type="text" name="username" placeholder="worker1" required />
+      </label>
+
+      <label>
+        <span>Парола:</span>
+        <input type="password" name="password" placeholder="TrainMe123!" required />
+      </label>
+
+      <button type="submit" class="primary-button">Влез и стартирай обучение</button>
+    </form>
+  </div>
+</section>
+
+<%- include("partials/footer") %>

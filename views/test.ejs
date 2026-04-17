@@ -1,0 +1,54 @@
+<%- include("partials/head", { title: "Test" }) %>
+<%- include("partials/header") %>
+
+<section class="simulator-layout">
+  <aside class="panel side-panel">
+    <span class="eyebrow">Scenario <%= view.currentIndex %> / <%= view.totalScenarios %></span>
+    <h2><%= view.scenarioTitle %></h2>
+    <p><%= view.scenarioDescription %></p>
+
+    <div class="meta-list">
+      <div>
+        <span>Persona</span>
+        <strong><%= view.personaName %></strong>
+      </div>
+      <div>
+        <span>Role</span>
+        <strong><%= view.personaRole %></strong>
+      </div>
+      <div>
+        <span>Choices made</span>
+        <strong><%= view.stepsTaken %></strong>
+      </div>
+    </div>
+  </aside>
+
+  <section class="chat-shell">
+    <header class="chat-header">
+      <div>
+        <span class="eyebrow">Live chat simulation</span>
+        <h2><%= view.personaName %> <span class="muted">(<%= view.personaRole %>)</span></h2>
+      </div>
+    </header>
+
+    <div class="chat-feed">
+      <% for (const message of view.conversation) { %>
+      <article class="message <%= message.direction %>">
+        <span class="message-author"><%= message.speaker %></span>
+        <div class="message-bubble"><%= message.text %></div>
+      </article>
+      <% } %>
+    </div>
+
+    <form method="post" action="/test/answer" class="choices-grid">
+      <% for (const option of view.options) { %>
+      <button type="submit" name="optionId" value="<%= option.id %>" class="choice-card">
+        <span class="choice-key"><%= option.choiceKey %></span>
+        <span><%= option.label %></span>
+      </button>
+      <% } %>
+    </form>
+  </section>
+</section>
+
+<%- include("partials/footer") %>

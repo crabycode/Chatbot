@@ -1,0 +1,63 @@
+<%- include("partials/head", { title: "Final Report" }) %>
+<%- include("partials/header") %>
+
+<section class="report-layout">
+  <div class="panel report-hero">
+    <span class="eyebrow">Final report</span>
+    <h2><%= report.passed ? "Тестът е преминат успешно" : "Тестът е преминат неуспешно" %></h2>
+    <p>
+      Успеваемост: <%= report.correctAnswers %>/<%= report.totalScenarios %> правилни сценария
+      (<%= report.successRatio %>%).
+      Нужно е минимум <%= report.passThreshold %>% за успешно преминаване.
+    </p>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <span>Risk score</span>
+        <strong><%= report.riskPercentage %>%</strong>
+      </div>
+      <div class="stat-card">
+        <span>Correct</span>
+        <strong><%= report.correctAnswers %></strong>
+      </div>
+      <div class="stat-card">
+        <span>Incorrect</span>
+        <strong><%= report.incorrectAnswers %></strong>
+      </div>
+    </div>
+
+    <p class="muted">
+      По-нисък risk score е по-добър. Той показва колко рискови решения е взел
+      служителят спрямо важността на казусите.
+    </p>
+
+    <div class="action-row">
+      <a href="/dashboard" class="secondary-button">Назад към dashboard</a>
+      <form method="post" action="/test/start">
+        <button type="submit" class="primary-button">Стартирай нов тест</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="panel">
+    <span class="eyebrow">Scenario breakdown</span>
+    <div class="scenario-list">
+      <% for (const item of sessionDoc.answeredScenarios) { %>
+      <article class="scenario-item">
+        <div>
+          <h3><%= item.scenarioTitle %></h3>
+          <p class="muted"><%= item.feedbackText %></p>
+        </div>
+        <div class="scenario-item-meta">
+          <span class="<%= item.status === 'success' ? 'pill-success' : 'pill-fail' %>">
+            <%= item.status.toUpperCase() %>
+          </span>
+          <span>Risk: <%= item.riskIncurred %>/<%= item.maxRisk %></span>
+        </div>
+      </article>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<%- include("partials/footer") %>

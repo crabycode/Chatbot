@@ -1,0 +1,52 @@
+<%- include("partials/head", { title: "Scenario Result" }) %>
+<%- include("partials/header") %>
+
+<section class="result-layout">
+  <div class="panel feedback-panel">
+    <div class="alert <%= outcome.feedbackKind === 'success' ? 'alert-success' : 'alert-fail' %>">
+      <strong><%= outcome.feedbackTitle %></strong>
+      <p><%= outcome.feedbackText %></p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <span>Решени сценарии</span>
+        <strong><%= answeredCount %>/<%= totalScenarios %></strong>
+      </div>
+      <div class="stat-card">
+        <span>Стъпки</span>
+        <strong><%= outcome.stepsTaken %></strong>
+      </div>
+      <div class="stat-card">
+        <span>Risk in this scenario</span>
+        <strong><%= outcome.riskIncurred %>/<%= outcome.maxRisk %></strong>
+      </div>
+    </div>
+
+    <form method="post" action="/test/continue">
+      <button type="submit" class="primary-button">
+        <%= isCompleted ? "Виж финалния report" : "Продължи към следващия сценарий" %>
+      </button>
+    </form>
+  </div>
+
+  <section class="chat-shell">
+    <header class="chat-header">
+      <div>
+        <span class="eyebrow">Scenario review</span>
+        <h2><%= outcome.personaName %> <span class="muted">(<%= outcome.personaRole %>)</span></h2>
+      </div>
+    </header>
+
+    <div class="chat-feed">
+      <% for (const message of outcome.conversation) { %>
+      <article class="message <%= message.direction %>">
+        <span class="message-author"><%= message.speaker %></span>
+        <div class="message-bubble"><%= message.text %></div>
+      </article>
+      <% } %>
+    </div>
+  </section>
+</section>
+
+<%- include("partials/footer") %>
