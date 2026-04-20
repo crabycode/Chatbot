@@ -1,8 +1,22 @@
 <header class="topbar">
-  <div>
-    <p class="topbar-kicker">Cybersecurity Training chatbot</p>
-    <h1 class="topbar-title"><%= appName %></h1>
-  </div>
+  <a
+    href="<%= currentUser ? '/dashboard' : '/login' %>"
+    class="topbar-brand"
+    aria-label="Cybreach home"
+  >
+    <span class="topbar-logo-frame">
+      <img
+        src="/static/assets/cybreach-logo2.png"
+        alt="Cybreach logo"
+        class="topbar-logo"
+      />
+    </span>
+
+    <span class="topbar-copy">
+      <p class="topbar-kicker">Cybersecurity Training chatbot</p>
+      <h1 class="topbar-title"><%= appName %></h1>
+    </span>
+  </a>
 
   <div class="topbar-actions">
     <button
