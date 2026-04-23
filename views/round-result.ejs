@@ -1,5 +1,10 @@
 <%- include("partials/head", { title: "Scenario Result" }) %>
-<%- include("partials/header") %>
+<%- include("partials/test-header", {
+  scenarioTitle: outcome.scenarioTitle,
+  currentIndex: answeredCount,
+  totalScenarios,
+  completedCount: answeredCount,
+}) %>
 
 <section class="result-layout">
   <div class="panel feedback-panel">

@@ -36,6 +36,17 @@ function toObjectId(value) {
 }
 
 
+function saveSessionAndRedirect(req, res, redirectPath) {
+  req.session.save((error) => {
+    if (error) {
+      console.error("Failed to save session before redirect:", error);
+    }
+
+    res.redirect(redirectPath);
+  });
+}
+
+
 async function startServer() {
   await connectToDatabase();
   const db = getDatabase();
@@ -158,7 +169,7 @@ async function startServer() {
 
     req.session.userId = user._id.toString();
     delete req.session.activeTestSessionId;
-    return res.redirect("/dashboard");
+    return saveSessionAndRedirect(req, res, "/dashboard");
   });
 
   app.post("/logout", (req, res) => {
@@ -225,7 +236,7 @@ async function startServer() {
 
     const result = await db.collection("test_sessions").insertOne(sessionDoc);
     req.session.activeTestSessionId = result.insertedId.toString();
-    return res.redirect("/test/current");
+    return saveSessionAndRedirect(req, res, "/test/current");
   });
 
   app.get("/test/current", async (req, res) => {

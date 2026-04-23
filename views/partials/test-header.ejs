@@ -1,0 +1,35 @@
+<%
+  const safeTotal = Math.max(Number(totalScenarios || 0), 1);
+  const safeCompleted = Math.max(Number(completedCount || 0), 0);
+  const progressPercent = Math.min((safeCompleted / safeTotal) * 100, 100);
+%>
+
+<header class="test-topbar">
+  <div class="test-topbar-logo-mark" aria-label="Cybreach">
+    <img
+      src="/static/assets/cybreach-logo2.png"
+      alt="Cybreach logo"
+      class="test-topbar-logo"
+    />
+  </div>
+
+  <div class="test-topbar-progress">
+    <div class="test-topbar-title-row">
+      <p class="test-topbar-kicker">Active test</p>
+      <h1 class="test-topbar-title"><%= scenarioTitle %></h1>
+    </div>
+
+    <div class="test-progress-track" aria-hidden="true">
+      <span class="test-progress-fill" style="width: <%= progressPercent %>%"></span>
+    </div>
+
+    <p class="test-progress-label">
+      Scenario <%= currentIndex %> / <%= totalScenarios %>
+      <span><%= safeCompleted %>/<%= totalScenarios %> completed</span>
+    </p>
+  </div>
+
+  <a href="/dashboard" class="ghost-link test-exit-link">Изход</a>
+</header>
+
+<main class="page-shell test-page-shell">

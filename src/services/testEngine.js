@@ -102,8 +102,14 @@ export function buildLiveView(sessionDoc, scenario) {
     progress.currentNodeId,
     `scenario "${scenario.code || scenario.title}"`,
   );
+  const testAttemptKey =
+    sessionDoc._id?.toString() ||
+    sessionDoc.startedAt?.getTime?.().toString() ||
+    sessionDoc.startedAt?.toISOString?.() ||
+    "";
 
   return {
+    testAttemptKey,
     scenarioTitle: scenario.title,
     scenarioDescription: scenario.description || "",
     personaName: scenario.personaName,

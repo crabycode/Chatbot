@@ -1,28 +1,12 @@
 <%- include("partials/head", { title: "Test" }) %>
-<%- include("partials/header") %>
+<%- include("partials/test-header", {
+  scenarioTitle: view.scenarioTitle,
+  currentIndex: view.currentIndex,
+  totalScenarios: view.totalScenarios,
+  completedCount: view.currentIndex - 1,
+}) %>
 
 <section class="simulator-layout">
-  <aside class="panel side-panel">
-    <span class="eyebrow">Scenario <%= view.currentIndex %> / <%= view.totalScenarios %></span>
-    <h2><%= view.scenarioTitle %></h2>
-    <p><%= view.scenarioDescription %></p>
-
-    <div class="meta-list">
-      <div>
-        <span>Persona</span>
-        <strong><%= view.personaName %></strong>
-      </div>
-      <div>
-        <span>Role</span>
-        <strong><%= view.personaRole %></strong>
-      </div>
-      <div>
-        <span>Choices made</span>
-        <strong><%= view.stepsTaken %></strong>
-      </div>
-    </div>
-  </aside>
-
   <section class="chat-shell">
     <header class="chat-header">
       <div>
@@ -31,16 +15,20 @@
       </div>
     </header>
 
-    <div class="chat-feed">
+    <div
+      class="chat-feed"
+      data-typing-feed
+      data-conversation-key="<%= `${view.testAttemptKey}-${view.currentIndex}-${view.scenarioTitle}` %>"
+    >
       <% for (const message of view.conversation) { %>
-      <article class="message <%= message.direction %>">
+      <article class="message <%= message.direction %> is-pending" data-chat-message>
         <span class="message-author"><%= message.speaker %></span>
         <div class="message-bubble"><%= message.text %></div>
       </article>
       <% } %>
     </div>
 
-    <form method="post" action="/test/answer" class="choices-grid">
+    <form method="post" action="/test/answer" class="choices-grid is-waiting" data-chat-choices>
       <% for (const option of view.options) { %>
       <button type="submit" name="optionId" value="<%= option.id %>" class="choice-card">
         <span class="choice-key"><%= option.choiceKey %></span>
@@ -51,4 +39,5 @@
   </section>
 </section>
 
+<script src="/static/chatTyping.js"></script>
 <%- include("partials/footer") %>
