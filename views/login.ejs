@@ -27,12 +27,39 @@
     <form method="post" action="/login" class="form-stack">
       <label>
         <span>Потребителско име:</span>
-        <input type="text" name="username" placeholder="worker1" required />
+        <input type="text" name="username" placeholder="worker1" autocomplete="username" required />
       </label>
 
       <label>
         <span>Парола:</span>
-        <input type="password" name="password" placeholder="TrainMe123!" required />
+        <div class="password-input-wrap">
+          <input
+            id="login-password"
+            type="password"
+            name="password"
+            placeholder="TrainMe123!"
+            autocomplete="current-password"
+            required
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            data-password-toggle="#login-password"
+            aria-label="Покажи паролата"
+            aria-pressed="false"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="password-toggle-icon"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M1.5 12S5.5 5.5 12 5.5 22.5 12 22.5 12 18.5 18.5 12 18.5 1.5 12 1.5 12Z" />
+              <circle cx="12" cy="12" r="3.2" />
+              <path class="password-toggle-slash" d="M4 20 20 4" />
+            </svg>
+          </button>
+        </div>
       </label>
 
       <button type="submit" class="primary-button">Влез и стартирай обучение</button>
@@ -40,4 +67,5 @@
   </div>
 </section>
 
+<script src="/static/passwordToggle.js"></script>
 <%- include("partials/footer") %>

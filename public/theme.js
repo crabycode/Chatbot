@@ -14,8 +14,11 @@
     }
 
     const nextTheme = theme === "dark" ? "light" : "dark";
-    themeLabel.textContent = nextTheme === "dark" ? "Dark mode" : "Light mode";
-    themeToggleButton.setAttribute("aria-label", `Switch to ${nextTheme} mode`);
+    themeLabel.textContent = theme === "dark" ? "Тъмна" : "Светла";
+    themeToggleButton.setAttribute(
+      "aria-label",
+      nextTheme === "dark" ? "Смени към тъмна тема" : "Смени към светла тема",
+    );
     themeToggleButton.setAttribute("aria-pressed", String(theme === "dark"));
   };
 

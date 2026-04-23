@@ -351,7 +351,7 @@ body,
 
 .theme-toggle {
   gap: 0.55rem;
-  min-width: 10.5rem;
+  min-width: 5rem;
 }
 
 .theme-toggle-prefix {
@@ -466,6 +466,10 @@ body,
   gap: 0.5rem;
 }
 
+.password-input-wrap {
+  position: relative;
+}
+
 .form-stack input {
   width: 100%;
   border: 1px solid var(--line);
@@ -473,6 +477,61 @@ body,
   color: var(--text);
   border-radius: 14px;
   padding: 0.9rem 1rem;
+}
+
+.password-input-wrap input {
+  padding-right: 3.9rem;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.password-toggle:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.password-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(98, 100, 167, 0.14);
+}
+
+html[data-theme="dark"] .password-toggle:focus-visible {
+  box-shadow: 0 0 0 4px rgba(123, 131, 255, 0.18);
+}
+
+.password-toggle-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.password-toggle-slash {
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.password-toggle.is-visible .password-toggle-slash {
+  opacity: 1;
 }
 
 .form-stack input::placeholder {
