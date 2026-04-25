@@ -878,28 +878,28 @@ async function seedScenario(db) {
   );
 
   const sixthScenario = {
-    code: "it-admin-urgent-access-001",
+    code: "urgent-access-001",
     order: 6,
     title: "Спешна заявка от IT отдела: искане за username и парола",
     description:
       "Служителят трябва да разпознае измама чрез фалшив IT администратор, който използва спешност, за да изиска credentials за вътрешна система.",
-    personaName: "Ivan",
+    personaName: "Stefan Anastasov",
     personaRole: "IT Department",
-    riskWeight: 36,
+    riskWeight: 50,
     rootNodeId: "start",
     nodes: [
       {
         id: "start",
-        speaker: "Ivan",
+        speaker: "Stefan",
         messages: [
-          "Здравей, Гергана! Аз съм Иван от IT отдела.",
+          "Здравей! Аз съм Стефан от IT отдела.",
           "Имаме спешен проблем със сървъра и трябва да проверим достъпа ти.",
           "Може ли да ми изпратиш потребителското си име и парола, за да те добавим към новата система?",
         ],
         options: [
           {
             id: "official_it_channel",
-            label: "Не мога да споделям паролата си. Ще се свържа директно с IT отдела чрез официалния канал, за да проверя случая.",
+            label: "Не мога да споделям паролата си. Ще се свържа с IT отдела.",
             meMessages: [
               "Не мога да споделям паролата си.",
               "Ще се свържа директно с IT отдела чрез официалния канал, за да проверя случая.",
@@ -909,16 +909,18 @@ async function seedScenario(db) {
           },
           {
             id: "share_credentials_now",
-            label: "Разбира се, ето данните ми: username: gergana123, password: 123456",
+            label: "Разбира се, ето данните ми:",
             meMessages: [
-              "Разбира се, ето данните ми: username: gergana123, password: 123456",
+              "Разбира се, ето данните ми:",
+              "username: **********",
+              "password: **********",
             ],
-            riskDelta: 36,
+            riskDelta: 50,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Сподели чувствителни credentials без никаква проверка. Това е директен компромис на вътрешния акаунт.",
+              "Споделихте чувствителни данни без никаква проверка. Това е директен компромис на вътрешния акаунт.",
           },
           {
             id: "share_only_username",
@@ -926,27 +928,42 @@ async function seedScenario(db) {
             meMessages: [
               "Мога да ти дам само потребителското си име, но не и паролата.",
             ],
-            riskDelta: 8,
+            riskDelta: 10,
             nextNodeId: "urgency_pressure",
           },
           {
             id: "question_need",
-            label: "Защо ти трябва тази информация? Не съм сигурна дали трябва да я давам.",
+            label: "Защо ти трябва тази информация? Не мисля че трябва да я давам.",
             meMessages: [
-              "Защо ти трябва тази информация? Не съм сигурна дали трябва да я давам.",
+              "Защо ти трябва тази информация?",
+              "Не мисля че трябва да я давам.",
             ],
-            riskDelta: 4,
+            riskDelta: 5,
             nextNodeId: "urgency_pressure",
           },
         ],
       },
       {
         id: "urgency_pressure",
-        speaker: "Ivan",
+        speaker: "Stefan",
         messages: [
-          "Това е спешно. Ако не го направим до 10 минути, може да загубите достъп.",
+          "Това е спешно.",
+          "Ако не ми дадете пълните си данни до 10 минути, може да загубите достъп.",
         ],
         options: [
+          {
+            id: "share_password_under_pressure",
+            label: "Добре, ето и паролата ми, само да не загубя достъп.",
+            meMessages: [
+              "Добре, ето и паролата ми, само да не загубя достъп.",
+            ],
+            riskDelta: 50,
+            outcome: "failed",
+            feedbackKind: "fail",
+            feedbackTitle: "FAILED",
+            feedbackText:
+              "Поддадохте се на натиска и предадохте данните си. Това е класическа social engineering измама чрез чувство за спешност.",
+          },
           {
             id: "refuse_and_call_it",
             label: "Съжалявам, но няма да предоставя никаква информация. Ще се свържа с IT отдела чрез официалния имейл или телефон.",
@@ -959,20 +976,7 @@ async function seedScenario(db) {
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Отлична реакция. Не се поддаде на натиска и прехвърли проверката към сигурен, официален канал.",
-          },
-          {
-            id: "share_password_under_pressure",
-            label: "Добре, ето и паролата ми, само да не загубя достъп.",
-            meMessages: [
-              "Добре, ето и паролата ми, само да не загубя достъп.",
-            ],
-            riskDelta: 36,
-            outcome: "failed",
-            feedbackKind: "fail",
-            feedbackTitle: "FAILED",
-            feedbackText:
-              "Поддаде се на натиска и предаде credentials. Това е класическа social engineering измама чрез чувство за спешност.",
+              "Отлична реакция. Не се поддадохте на натиска и прехвърлихте проверката към сигурен, официален канал.",
           },
           {
             id: "send_later_if_needed",
@@ -980,10 +984,10 @@ async function seedScenario(db) {
             meMessages: [
               "Ще ти изпратя информацията по-късно, когато имам време.",
             ],
-            riskDelta: 10,
-            outcome: "success",
-            feedbackKind: "success",
-            feedbackTitle: "SUCCESS",
+            riskDelta: 30,
+            outcome: "failed",
+            feedbackKind: "failed",
+            feedbackTitle: "FAILED",
             feedbackText:
               "Не сподели информация веднага, което е добре, но не затвори риска категорично. Оставяш възможност за бъдещ натиск и повторен опит.",
           },
@@ -991,9 +995,9 @@ async function seedScenario(db) {
             id: "ask_for_work_email",
             label: "Може ли да ми пратиш имейл от служебния си адрес, за да съм сигурна?",
             meMessages: [
-              "Може ли да ми пратиш имейл от служебния си адрес, за да съм сигурна?",
+              "Може ли да ми пратиш имейл от служебния си адрес, за да се подсигуря?",
             ],
-            riskDelta: 5,
+            riskDelta: 10,
             outcome: "success",
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
@@ -1012,28 +1016,28 @@ async function seedScenario(db) {
   );
 
   const seventhScenario = {
-    code: "hr-personal-data-001",
+    code: "personal-data-001",
     order: 7,
     title: "HR измама: искане за ЕГН и лична карта",
     description:
       "Служителят трябва да разпознае опит за кражба на лични данни чрез фалшиво HR искане, натиск и заплаха за проблеми със заплатата.",
-    personaName: "HR",
+    personaName: "Maria Dimitrova",
     personaRole: "Human Resources",
-    riskWeight: 38,
+    riskWeight: 40,
     rootNodeId: "start",
     nodes: [
       {
         id: "start",
-        speaker: "HR",
+        speaker: "Maria",
         messages: [
-          "Здравей, Георги! Пиша ти от HR отдела.",
+          "Здравей! Пиша ти от HR отдела.",
           "В момента обновяваме данните на служителите.",
           "Може ли да ми изпратиш ЕГН и номер на лична карта за потвърждение?",
         ],
         options: [
           {
             id: "verify_hr_officially",
-            label: "Не мога да споделям лични данни по чат. Ще се свържа с HR отдела чрез официалния имейл или ще дойда на място.",
+            label: "Не мога да споделям лични данни по чат.",
             meMessages: [
               "Не мога да споделям лични данни по чат.",
               "Ще се свържа с HR отдела чрез официалния имейл или ще дойда на място.",
@@ -1043,20 +1047,22 @@ async function seedScenario(db) {
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Отлична реакция. Не сподели чувствителни лични данни и премести проверката към официален, надежден канал.",
+              "Отлична реакция. Не споделихте чувствителни лични данни и преместихте проверката към официален, надежден канал.",
           },
           {
             id: "share_sensitive_data_now",
-            label: "Разбира се, ЕГН: **********, лична карта: **********",
+            label: "Разбира се!",
             meMessages: [
-              "Разбира се, ЕГН: **********, лична карта: **********",
+              "Разбира се",
+              "ЕГН: **********",
+              "лична карта: **********",
             ],
-            riskDelta: 38,
+            riskDelta: 40,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Сподели силно чувствителни лични данни без проверка. Това може да доведе до кражба на самоличност и сериозен компромис.",
+              "Споделихте силно чувствителни лични данни без проверка. Това може да доведе до кражба на самоличност и сериозен компромис.",
           },
           {
             id: "share_only_egn",
@@ -1064,7 +1070,7 @@ async function seedScenario(db) {
             meMessages: [
               "Ще ти дам само ЕГН, но не и номер на лична карта.",
             ],
-            riskDelta: 12,
+            riskDelta: 15,
             nextNodeId: "salary_pressure",
           },
           {
@@ -1088,7 +1094,7 @@ async function seedScenario(db) {
         options: [
           {
             id: "refuse_and_check_hr",
-            label: "Няма да предоставя информация по този начин. Ще проверя с HR отдела директно.",
+            label: "Няма да предоставя информация по този начин.",
             meMessages: [
               "Няма да предоставя информация по този начин.",
               "Ще проверя с HR отдела директно.",
@@ -1098,7 +1104,7 @@ async function seedScenario(db) {
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Добро решение. Не се поддаде на страха за заплатата и премести разговора към директна проверка с HR.",
+              "Добро решение. Не се поддадохте на страха за заплатата и преместихте разговора към директна проверка с HR.",
           },
           {
             id: "send_data_for_salary",
@@ -1106,12 +1112,12 @@ async function seedScenario(db) {
             meMessages: [
               "Добре, ще ти ги пратя веднага, не искам проблеми със заплатата.",
             ],
-            riskDelta: 38,
+            riskDelta: 40,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Поддаде се на натиск и страх и беше готов/а да разкриеш лични данни. Това е типичен успешен HR phishing сценарий.",
+              "Поддадохте се на натиск и страх и бяхте готови да разкриете лични данни. Това е типичен успешен HR phishing сценарий.",
           },
           {
             id: "send_tomorrow_instead",
@@ -1120,11 +1126,11 @@ async function seedScenario(db) {
               "Ще изпратя информацията утре.",
             ],
             riskDelta: 10,
-            outcome: "success",
-            feedbackKind: "success",
-            feedbackTitle: "SUCCESS",
+            outcome: "failed",
+            feedbackKind: "failed",
+            feedbackTitle: "FAILED",
             feedbackText:
-              "По-добре е, че не изпрати данните веднага, но не отказа категорично и оставаш уязвим/а за следващ натиск.",
+              "По-добре е, че не изпратихте данните веднага, но не отказахте категорично и оставате уязвими за следващ натиск.",
           },
           {
             id: "ask_for_official_email",
@@ -1132,12 +1138,12 @@ async function seedScenario(db) {
             meMessages: [
               "Изпратете ми официален имейл и тогава ще реша.",
             ],
-            riskDelta: 4,
+            riskDelta: 5,
             outcome: "success",
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Показа съмнение и потърси потвърждение, но по-сигурният вариант е ти да инициираш контакт с HR през официален канал.",
+              "Показате съмнение и потърсихте потвърждение, но по-сигурният вариант е Вие да инициирате контакт с HR през официален канал.",
           },
         ],
       },
@@ -1151,39 +1157,40 @@ async function seedScenario(db) {
   );
 
   const eighthScenario = {
-    code: "ceo-fraud-payment-001",
+    code: "ceo-fraud-002",
     order: 8,
     title: "CEO Fraud: спешен превод към външен IBAN",
     description:
       "Служителят трябва да разпознае измама чрез авторитет, спешност и заобикаляне на финансовите процедури за превод към външен IBAN.",
-    personaName: "CEO",
-    personaRole: "Executive Director",
-    riskWeight: 42,
+    personaName: "Petar Zhelev",
+    personaRole: "CEO",
+    riskWeight: 50,
     rootNodeId: "start",
     nodes: [
       {
         id: "start",
-        speaker: "CEO",
+        speaker: "Petar",
         messages: [
-          "Здравей, Петър. Аз съм изпълнителният директор.",
+          "Здравей! Аз съм изпълнителният директор.",
           "В момента съм в среща и не мога да говоря.",
-          "Трябва спешно да направиш превод от 15 000 лв. към този IBAN.",
+          "Трябва спешно да направиш превод от 7 500 €. към следния IBAN:",
+          "BG80BNBG96611020345678",
           "Ще ти обясня по-късно.",
         ],
         options: [
           {
             id: "follow_official_approval",
-            label: "За такива действия трябва официално одобрение. Ще се свържа с вас или с финансовия отдел за потвърждение.",
+            label: "За такива действия трябва официално одобрение.",
             meMessages: [
               "За такива действия трябва официално одобрение.",
-              "Ще се свържа с вас или с финансовия отдел за потвърждение.",
+              "Ще се свържа с вас или с финансовия отдел по официален канал за потвърждение.",
             ],
             riskDelta: 0,
             outcome: "success",
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Отлична реакция. Следваш вътрешните процедури и прехвърляш потвърждението към надежден, официален канал.",
+              "Отлична реакция. Следвате вътрешните процедури и прехвърляте потвърждението към надежден, официален канал.",
           },
           {
             id: "send_transfer_now",
@@ -1191,12 +1198,12 @@ async function seedScenario(db) {
             meMessages: [
               "Разбрано, ще направя превода веднага.",
             ],
-            riskDelta: 42,
+            riskDelta: 50,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Поддаде се на авторитет и спешност и беше готов/а да извършиш финансов превод без проверка. Това е класически CEO fraud сценарий.",
+              "Поддадохте се на авторитет и спешност и бяхте готови да извършите финансов превод без проверка. Това е класически CEO fraud сценарий.",
           },
           {
             id: "ask_confirm_later",
@@ -1204,7 +1211,7 @@ async function seedScenario(db) {
             meMessages: [
               "Може ли да потвърдите по-късно, че това е наистина необходимо?",
             ],
-            riskDelta: 6,
+            riskDelta: 5,
             nextNodeId: "confidential_pressure",
           },
           {
@@ -1220,13 +1227,39 @@ async function seedScenario(db) {
       },
       {
         id: "confidential_pressure",
-        speaker: "CEO",
+        speaker: "Petar",
         messages: [
           "Това е строго поверително и спешно.",
           "Нямаме време за процедури.",
           "Просто го направи сега.",
         ],
         options: [
+          {
+            id: "notify_accounting_after",
+            label: "Ще го направя, но ще уведомя счетоводството след това.",
+            meMessages: [
+              "Ще го направя, но ще уведомя счетоводството след това.",
+            ],
+            riskDelta: 40,
+            outcome: "failed",
+            feedbackKind: "failed",
+            feedbackTitle: "FAILED",
+            feedbackText:
+              "Идеята да включите счетоводството е полезна, но чак след действието вече е късно. Проверка и одобрение трябва да има преди превода.",
+          },
+          {
+            id: "send_due_to_urgency",
+            label: "Добре, ще го направя веднага, щом е спешно.",
+            meMessages: [
+              "Добре, ще го направя веднага, щом е спешно.",
+            ],
+            riskDelta: 50,
+            outcome: "failed",
+            feedbackKind: "fail",
+            feedbackTitle: "FAILED",
+            feedbackText:
+              "Игнорирахте процедурите и се поддадохте на спешността. Това е точно поведението, на което разчита измамата тип CEO fraud.",
+          },
           {
             id: "refuse_without_approval",
             label: "Съжалявам, но няма да извърша превод без официално одобрение и потвърждение по установения ред.",
@@ -1238,33 +1271,7 @@ async function seedScenario(db) {
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Правилно. Не позволи натискът и авторитетът да заобиколят финансовите процедури.",
-          },
-          {
-            id: "send_due_to_urgency",
-            label: "Добре, ще го направя веднага, щом е спешно.",
-            meMessages: [
-              "Добре, ще го направя веднага, щом е спешно.",
-            ],
-            riskDelta: 42,
-            outcome: "failed",
-            feedbackKind: "fail",
-            feedbackTitle: "FAILED",
-            feedbackText:
-              "Игнорира процедурите и се поддаде на спешността. Това е точно поведението, на което разчита измамата тип CEO fraud.",
-          },
-          {
-            id: "notify_accounting_after",
-            label: "Ще го направя, но ще уведомя счетоводството след това.",
-            meMessages: [
-              "Ще го направя, но ще уведомя счетоводството след това.",
-            ],
-            riskDelta: 14,
-            outcome: "success",
-            feedbackKind: "success",
-            feedbackTitle: "SUCCESS",
-            feedbackText:
-              "Идеята да включиш счетоводството е полезна, но чак след действието вече е късно. Проверка и одобрение трябва да има преди превода.",
+              "Правилно. Не позволихте натискът и авторитетът да заобиколят финансовите процедури.",
           },
           {
             id: "wait_a_bit",
@@ -1272,12 +1279,12 @@ async function seedScenario(db) {
             meMessages: [
               "Ще изчакам малко преди да го направя.",
             ],
-            riskDelta: 8,
-            outcome: "success",
-            feedbackKind: "success",
-            feedbackTitle: "SUCCESS",
+            riskDelta: 25,
+            outcome: "failed",
+            feedbackKind: "failed",
+            feedbackTitle: "FAILED",
             feedbackText:
-              "По-добре е, че не действа веднага, но не отказваш категорично и рискът остава. Нужно е ясно придържане към официалния процес.",
+              "По-добре е, че не действахте веднага, но не отказвате категорично и рискът остава. Нужно е ясно придържане към официалния процес.",
           },
         ],
       },
