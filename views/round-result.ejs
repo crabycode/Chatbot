@@ -44,9 +44,18 @@
     </header>
 
     <div class="chat-feed">
-      <% for (const message of outcome.conversation) { %>
+      <% for (let index = 0; index < outcome.conversation.length; index += 1) {
+        const message = outcome.conversation[index];
+        const previousMessage = index > 0 ? outcome.conversation[index - 1] : null;
+        const showAuthor =
+          !previousMessage ||
+          previousMessage.direction !== message.direction ||
+          previousMessage.speaker !== message.speaker;
+      %>
       <article class="message <%= message.direction %>">
+        <% if (showAuthor) { %>
         <span class="message-author"><%= message.speaker %></span>
+        <% } %>
         <div class="message-bubble"><%= message.text %></div>
       </article>
       <% } %>

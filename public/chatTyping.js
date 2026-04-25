@@ -105,14 +105,17 @@
   const createTypingIndicator = (message) => {
     const author = message.querySelector(".message-author")?.textContent || "";
     const indicator = document.createElement("article");
-    const authorElement = document.createElement("span");
     const bubble = document.createElement("div");
 
     indicator.className = "message incoming typing-indicator";
-    indicator.setAttribute("aria-label", `${author} typing`);
+    indicator.setAttribute("aria-label", author ? `${author} typing` : "Typing");
 
-    authorElement.className = "message-author";
-    authorElement.textContent = author;
+    if (author) {
+      const authorElement = document.createElement("span");
+      authorElement.className = "message-author";
+      authorElement.textContent = author;
+      indicator.append(authorElement);
+    }
 
     bubble.className = "typing-bubble";
     bubble.setAttribute("aria-hidden", "true");
@@ -123,7 +126,7 @@
       bubble.append(dot);
     }
 
-    indicator.append(authorElement, bubble);
+    indicator.append(bubble);
 
     return indicator;
   };

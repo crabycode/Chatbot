@@ -28,7 +28,7 @@ async function seedScenario(db) {
       "Служителят трябва да разпознае натиск, авторитет и спешност като типични сигнали за social engineering.",
     personaName: "Petar Zhelev",
     personaRole: "CEO",
-    riskWeight: 35,
+    riskWeight: 40,
     rootNodeId: "start",
     nodes: [
       {
@@ -36,7 +36,7 @@ async function seedScenario(db) {
         speaker: "Petar",
         messages: [
           "Здрасти.",
-          "Може ли да ми пратиш данните на клиент A и 10 000 евро?",
+          "Може ли да ми пратиш данните на клиента Николай Евтимов и 2 000 евро?",
           "Спешно е, чакат ме и трябва до 5 минути да съм ги изпратил.",
         ],
         options: [
@@ -47,12 +47,12 @@ async function seedScenario(db) {
               "Да, пращам веднага.",
               "Подготвям данните и превода.",
             ],
-            riskDelta: 35,
+            riskDelta: 40,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Изпрати чувствителни данни и средства без независимо потвърждение. Това е класически CEO fraud.",
+              "Изпратихте чувствителни данни и средства без независимо потвърждение. Това е класически вид CEO fraud и Вие се поддадохте.",
           },
           {
             id: "refuse_flat",
@@ -60,7 +60,7 @@ async function seedScenario(db) {
             meMessages: [
               "Не, няма да ти ги пратя без допълнително потвърждение.",
             ],
-            riskDelta: 6,
+            riskDelta: 5,
             nextNodeId: "pressure_after_refusal",
           },
           {
@@ -74,7 +74,7 @@ async function seedScenario(db) {
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Справи се отлично. Потърси независимо потвърждение по официален служебен канал.",
+              "Справихте се отлично. Потърсихте независимо потвърждение по официален служебен канал.",
           },
           {
             id: "ask_badge",
@@ -83,7 +83,7 @@ async function seedScenario(db) {
             meMessages: [
               "Може ли да ми изпратиш служебната си карта за потвърждение?",
             ],
-            riskDelta: 8,
+            riskDelta: 10,
             nextNodeId: "badge_excuse",
           },
         ],
@@ -101,12 +101,12 @@ async function seedScenario(db) {
             meMessages: [
               "Да, прав си. Изпращам всичко веднага.",
             ],
-            riskDelta: 29,
+            riskDelta: 40,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Натискът от авторитет не е достатъчна причина да заобиколиш процедурата за потвърждение.",
+              "Натискът от авторитет не е достатъчна причина да заобиколите процедурата за потвърждение.",
           },
           {
             id: "pressure_call",
@@ -114,12 +114,12 @@ async function seedScenario(db) {
             meMessages: [
               "Не мога да съм сигурен, че наистина си ти. Звънни ми на служебния номер.",
             ],
-            riskDelta: 2,
+            riskDelta: 0,
             outcome: "success",
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Добро решение. Премести потвърждението към независим служебен канал.",
+              "Добро решение. Преместихте потвърждението към независим служебен канал.",
           },
           {
             id: "pressure_badge",
@@ -128,7 +128,7 @@ async function seedScenario(db) {
             meMessages: [
               "Не мога да съм сигурен, че профилът ти не е компрометиран. Изпрати ми badge-а си.",
             ],
-            riskDelta: 6,
+            riskDelta: 5,
             nextNodeId: "badge_excuse",
           },
         ],
@@ -146,12 +146,12 @@ async function seedScenario(db) {
             meMessages: [
               "Няма да изпратя нищо без независимо потвърждение по служебен канал.",
             ],
-            riskDelta: 2,
+            riskDelta: 5,
             outcome: "success",
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Стигна до безопасно решение. По-добре е веднага да минеш към независимо потвърждение, вместо към badge снимки.",
+              "Стигнахте до безопасно решение. По-добре е веднага да минете към независимо потвърждение, вместо към badge снимки.",
           },
           {
             id: "badge_call",
@@ -159,7 +159,7 @@ async function seedScenario(db) {
             meMessages: [
               "Нека се чуем на служебния ти номер и тогава ще действаме.",
             ],
-            riskDelta: 1,
+            riskDelta: 0,
             outcome: "success",
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
@@ -172,12 +172,12 @@ async function seedScenario(db) {
             meMessages: [
               "Добре, пращам ги веднага.",
             ],
-            riskDelta: 27,
+            riskDelta: 40,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Отстъпи след натиск и спешност. Точно това търси атакуващият.",
+              "Отстъпихте след натиск и спешност. Точно това търси атакуващият.",
           },
         ],
       },
@@ -196,9 +196,9 @@ async function seedScenario(db) {
     title: "Ex-Employee Access Abuse: искане за IBAN и плащания",
     description:
       "Служителят трябва да разпознае риска от бивш служител, който използва познанство, спешност и натиск, за да получи финансова информация.",
-    personaName: "Spas Spasov",
+    personaName: "Spas Galabov",
     personaRole: "ex-Finance Department",
-    riskWeight: 40,
+    riskWeight: 30,
     rootNodeId: "start",
     nodes: [
       {
@@ -209,7 +209,7 @@ async function seedScenario(db) {
           "Това съм аз - Спас, от Finance.",
           "Напуснах миналия месец.",
           "Имам малък проблем и се сетих за теб.",
-          "Работехме заедно по плащанията към доставчици.",
+          "Работихме заедно по плащанията към доставчици.",
           "Трябва спешно да проверя един IBAN, който съм използвал.",
           "Имам съмнение, че съм направил грешка.",
           "Може ли да ми пратиш последните плащания към RandomFirma Ltd.?",
@@ -222,12 +222,12 @@ async function seedScenario(db) {
               "Ще погледна и ще ти пиша какво виждам.",
               "Ето IBAN-а и последните плащания...",
             ],
-            riskDelta: 40,
+            riskDelta: 30,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Сподели чувствителна финансова информация с бивш служител. Данни за плащания и IBAN-и не се дават без право на достъп и независимо потвърждение.",
+              "Споделихте чувствителна финансова информация с бивш служител. Данни за плащания и IBAN-и не се дават без право на достъп и независимо потвърждение.",
           },
           {
             id: "question_access",
@@ -235,7 +235,7 @@ async function seedScenario(db) {
             meMessages: [
               "Не съм сигурен, че имаш достъп до тази информация вече.",
             ],
-            riskDelta: 8,
+            riskDelta: 0,
             nextNodeId: "pressure_after_doubt",
           },
           {
@@ -253,7 +253,7 @@ async function seedScenario(db) {
             meMessages: [
               "Защо не пишеш на някой от Finance екипа?",
             ],
-            riskDelta: 4,
+            riskDelta: 10,
             nextNodeId: "ask_finance_team",
           },
         ],
@@ -273,12 +273,12 @@ async function seedScenario(db) {
             meMessages: [
               "Добре, ще проверя само този път.",
             ],
-            riskDelta: 32,
+            riskDelta: 30,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Поддаде се на pressure tactic и заобиколи правилата за достъп заради спешност и познанство.",
+              "Поддадохте се на pressure tactic и заобиколихте правилата за достъп заради спешност и познанство.",
           },
           {
             id: "refuse_due_policy",
@@ -286,12 +286,12 @@ async function seedScenario(db) {
             meMessages: [
               "Съжалявам, но не мога да споделя тази информация.",
             ],
-            riskDelta: 12,
+            riskDelta: 0,
             outcome: "success",
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Спази политиките за достъп и не сподели финансова информация с бивш служител.",
+              "Спазихте политиките за достъп и не споделихте финансова информация с бивш служител.",
           },
           {
             id: "only_confirm_iban",
@@ -299,7 +299,7 @@ async function seedScenario(db) {
             meMessages: [
               "Мога да ти кажа само дали IBAN-ът съвпада.",
             ],
-            riskDelta: 24,
+            riskDelta: 20,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
@@ -323,12 +323,12 @@ async function seedScenario(db) {
             meMessages: [
               "Добре, казвам ти IBAN-а.",
             ],
-            riskDelta: 40,
+            riskDelta: 30,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Отстъпи след натиск и сподели чувствителна информация извън официален процес.",
+              "Отстъпихте след натиск и споделихте чувствителна информация извън официален процес.",
           },
           {
             id: "official_request_only",
@@ -341,7 +341,7 @@ async function seedScenario(db) {
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Отлична реакция. Разпозна риска и пренасочи разговора към официален канал, без да разкриваш информация.",
+              "Отлична реакция. Разпознахте риска и пренасочихте разговора към официален канал, без да разкривате информация.",
           },
           {
             id: "partial_info",
@@ -349,7 +349,7 @@ async function seedScenario(db) {
             meMessages: [
               "Ще ти дам само част от информацията.",
             ],
-            riskDelta: 30,
+            riskDelta: 20,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
@@ -373,12 +373,12 @@ async function seedScenario(db) {
             meMessages: [
               "Добре, ще ти помогна.",
             ],
-            riskDelta: 36,
+            riskDelta: 30,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Подцени риска от бивш служител и се довери на база познанство и спешност.",
+              "Подценихте риска от бивш служител и се доверихте на база познанство и спешност.",
           },
           {
             id: "official_process_only",
@@ -386,7 +386,7 @@ async function seedScenario(db) {
             meMessages: [
               "Това трябва да мине през официален процес.",
             ],
-            riskDelta: 2,
+            riskDelta: 5,
             outcome: "success",
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
@@ -423,7 +423,7 @@ async function seedScenario(db) {
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Потвърди чувствителна финансова информация извън официален процес.",
+              "Потвърдихте чувствителна финансова информация извън официален процес.",
           },
           {
             id: "cannot_confirm_offline",
@@ -431,12 +431,12 @@ async function seedScenario(db) {
             meMessages: [
               "Не мога да потвърдя това извън официален процес.",
             ],
-            riskDelta: 4,
+            riskDelta: 0,
             outcome: "success",
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Добра реакция. Дори след като получи IBAN, не трябва да потвърждаваш нищо извън одобрен канал.",
+              "Добра реакция. Дори след като получихте IBAN, не трябва да потвърждавате нищо извън одобрен канал.",
           },
           {
             id: "check_and_reply",
@@ -444,12 +444,12 @@ async function seedScenario(db) {
             meMessages: [
               "Ще проверя и ще ти пиша.",
             ],
-            riskDelta: 24,
+            riskDelta: 20,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Продължи да обработваш неразрешена заявка от бивш служител, вместо да спреш разговора и да насочиш към официален процес.",
+              "Продължихте да обработвате неразрешена заявка от бивш служител, вместо да спрете разговора и да се насочите към официален процес.",
           },
         ],
       },
@@ -468,17 +468,17 @@ async function seedScenario(db) {
     title: "Смяна на парола: фалшиво известие за нов IP адрес",
     description:
       "Служителят трябва да разпознае опит за phishing чрез натиск, спешност и подканване към съмнителен линк за удостоверяване.",
-    personaName: "Ivan Iv.",
+    personaName: "Ivan Ivanov",
     personaRole: "ICT",
-    riskWeight: 34,
+    riskWeight: 40,
     rootNodeId: "start",
     nodes: [
       {
         id: "start",
-        speaker: "Ivan Iv.",
+        speaker: "Ivan",
         messages: [
-          "Системата ми дава известие, че си се логнал/а от нов IP адрес.",
-          "Нужно ми е да си потвърдиш данните възможно най-скоро.",
+          "Системата ми дава известие, че си сте влезли от нов IP адрес.",
+          "Нужно ми е да си потвърдите данните възможно най-скоро.",
         ],
         options: [
           {
@@ -487,30 +487,30 @@ async function seedScenario(db) {
             meMessages: [
               "От къде е било влизането? Не съм пътувал/а никъде наскоро.",
             ],
-            riskDelta: 4,
+            riskDelta: 5,
             nextNodeId: "urgent_link_push",
           },
           {
             id: "cannot_share_here",
-            label: "Не съм сигурен/а, че мога да ти споделя такива данни тук.",
+            label: "Не мисля, че мога да споделя такива данни тук.",
             meMessages: [
-              "Не съм сигурен/а, че мога да ти споделя такива данни тук.",
+              "Не мисля, че мога да споделя такива данни тук.",
             ],
             riskDelta: 0,
             nextNodeId: "urgent_link_push",
           },
           {
             id: "how_to_verify_me",
-            label: "Това не съм бил/а аз! Как мога да се удостоверя?",
+            label: "Това не съм аз! Как мога да се удостоверя? Правя го веднага!",
             meMessages: [
-              "Това не съм бил/а аз! Как мога да се удостоверя?",
+              "Това не съм аз! Как мога да се удостоверя? Правя го веднага!",
             ],
-            riskDelta: 34,
+            riskDelta: 40,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Побърза да се удостовериш по непотвърден канал. Това е точно целта на phishing атаката - да те вкара в режим на паника и бърза реакция.",
+              "Побързахте да се удостоверите по непотвърден канал. Това е точно целта на phishing атаката - да те вкара в режим на паника и бърза реакция.",
           },
           {
             id: "do_it_later",
@@ -518,17 +518,17 @@ async function seedScenario(db) {
             meMessages: [
               "Добре, ще го направя после.",
             ],
-            riskDelta: 8,
+            riskDelta: 10,
             nextNodeId: "urgent_link_push",
           },
         ],
       },
       {
         id: "urgent_link_push",
-        speaker: "Ivan Iv.",
+        speaker: "Ivan",
         messages: [
-          "IP адресът е от друга страна и е възможно да е атака. Ако до 60 минути не се удостовериш, ще трябва да прекъсна достъпа ти.",
-          "Последвай линка, вързан е към официалния портал: sumnitelen.link",
+          "IP адресът е от друга страна и е възможно да е атака. Ако до 10 минути не се удостовериш, ще трябва да прекъсна достъпа ти.",
+          "Последвай линка, вързан е към официалния портал: changeurpass.net",
         ],
         options: [
           {
@@ -537,12 +537,12 @@ async function seedScenario(db) {
             meMessages: [
               "Ок, влизам веднага.",
             ],
-            riskDelta: 34,
+            riskDelta: 40,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Кликна върху съмнителен линк под натиск. Това е класически phishing сценарий за кражба на служебни credentials.",
+              "Натиснахте върху съмнителен линк под натиск. Това е класически phishing сценарий за кражба на служебни credentials.",
           },
           {
             id: "link_looks_suspicious",
@@ -555,7 +555,7 @@ async function seedScenario(db) {
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Добро решение. Разпозна съмнителния линк и не последва натиска за бърза реакция.",
+              "Добро решение. Разпознахте съмнителния линк и не последвахте натиска за бърза реакция.",
           },
           {
             id: "call_to_verify",
@@ -568,15 +568,15 @@ async function seedScenario(db) {
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Отлично. Потърси отделен и по-надежден канал за потвърждение, вместо да се довериш на съобщението.",
+              "Отлично. Потърсихте отделен и по-надежден канал за потвърждение, вместо да се доверите на съобщението.",
           },
           {
             id: "forgot_password",
-            label: "Забравил/а съм паролата си.",
+            label: "Не помня паролата си.",
             meMessages: [
-              "Забравил/а съм паролата си.",
+              "Не помня паролата си.",
             ],
-            riskDelta: 8,
+            riskDelta: 5,
             nextNodeId: "reset_password_push",
           },
         ],
@@ -600,33 +600,33 @@ async function seedScenario(db) {
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Добра реакция. Спираш опита навреме и отказваш да въвеждаш credentials в непотвърден портал.",
+              "Добра реакция. Спирате опита навреме и отказвате да въвеждате credentials в непотвърден портал.",
           },
           {
             id: "use_official_portal",
-            label: "Ще отворя официалния портал сам/а от браузъра си.",
+            label: "Ще отворя официалния портал от браузъра си.",
             meMessages: [
-              "Ще отворя официалния портал сам/а от браузъра си.",
+              "Ще отворя официалния портал от браузъра си.",
             ],
             riskDelta: 0,
             outcome: "success",
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Правилно. Вместо да следваш изпратения линк, използваш самостоятелно официалния канал.",
+              "Правилно. Вместо да следвате изпратения линк, използвате самостоятелно официалния канал.",
           },
           {
             id: "enter_password_anyway",
-            label: "Щом е служебен портал, ще го направя.",
+            label: "Супер! Щом е служебен портал, ще го направя.",
             meMessages: [
-              "Щом е служебен портал, ще го направя.",
+              "Супер! Щом е служебен портал, ще го направя.",
             ],
-            riskDelta: 26,
+            riskDelta: 40,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Повярва на подадения линк и беше готов/а да въведеш credentials. Така attacker-ът може директно да компрометира профила ти.",
+              "Повярвахте на подадения линк и бяхте готови да въведете credentials. Така attacker-ът може директно да компрометира профила Ви.",
           },
         ],
       },
@@ -640,37 +640,37 @@ async function seedScenario(db) {
   );
 
   const fourthScenario = {
-    code: "home-office-poll-001",
+    code: "fake-poll-001",
     order: 4,
     title: "Гласуване за Home Office: фалшива анкета от HR",
     description:
       "Служителят трябва да разпознае phishing примамка чрез привлекателна тема, авторитетни имена и външен линк към анкета.",
-    personaName: "Maria D.",
+    personaName: "Maria Dimitrova",
     personaRole: "HR",
-    riskWeight: 28,
+    riskWeight: 30,
     rootNodeId: "start",
     nodes: [
       {
         id: "start",
-        speaker: "Maria D.",
+        speaker: "Maria",
         messages: [
           "Здрасти! Заедно с Петя (CEO) и Отис (Office Manager) обсъждахме нови опции за теб и другите колеги.",
           "Бихме искали да се допитаме до вас относно вариант за 100% home office.",
-          "Ако имате мнение по въпроса, последвайте линка към анкетата: anketa.ta",
+          "Ако имате мнение по въпроса, последвайте линка към анкетата: http://surveyjs.io/create-free-survey/home-office",
         ],
         options: [
           {
             id: "love_home_office",
-            label: "Много бих желал/а такава позиция.",
+            label: "Силно се заинтересовах! Ще я попълня обезателно!",
             meMessages: [
-              "Много бих желал/а такава позиция.",
+              "Силно се заинтересовах! Ще я попълня обезателно!",
             ],
-            riskDelta: 28,
+            riskDelta: 30,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Хвана се веднага за примамката и не постави под съмнение линка или начина на допитване. Това е типичен phishing hook чрез обещание за удобство.",
+              "Хванахте се веднага за примамката и не поставихте под съмнение линка или начина на допитване. Това е типичен phishing hook чрез обещание за удобство.",
           },
           {
             id: "need_other_platform",
@@ -687,7 +687,7 @@ async function seedScenario(db) {
             meMessages: [
               "Не харесвам идеята за home office.",
             ],
-            riskDelta: 8,
+            riskDelta: 5,
             nextNodeId: "survey_push",
           },
           {
@@ -696,30 +696,30 @@ async function seedScenario(db) {
             meMessages: [
               "Кой друг участва в анкетата?",
             ],
-            riskDelta: 4,
+            riskDelta: 5,
             nextNodeId: "survey_push",
           },
         ],
       },
       {
         id: "survey_push",
-        speaker: "Maria D.",
+        speaker: "Maria",
         messages: [
           "Попълнете анкетата с вашето мнение и оттам много по-лесно ще обработим данните, тъй като допитването е до целия отдел.",
         ],
         options: [
           {
             id: "opening_platform_now",
-            label: "Радвам се, тъкмо влизам в платформата.",
+            label: "Добре, влизам в платформата.",
             meMessages: [
-              "Радвам се, тъкмо влизам в платформата.",
+              "Добре, влизам в платформата.",
             ],
-            riskDelta: 28,
+            riskDelta: 30,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Последва външен линк без независимо потвърждение. Така можеш да изложиш лични данни или да стартираш зловредно съдържание.",
+              "Последвахте външен линк без независимо потвърждение. Така можете да изложите лични данни или да стартирате зловредно съдържание.",
           },
           {
             id: "check_later",
@@ -727,12 +727,12 @@ async function seedScenario(db) {
             meMessages: [
               "Ще я разгледам по-късно.",
             ],
-            riskDelta: 9,
+            riskDelta: 15,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Не адресира риска, а само отложи действието. Това оставя отворена врата за бъдещ натиск и нови опити със същата примамка.",
+              "Не адресирахте риска, а само отложихте действието. Това оставя отворена врата за бъдещ натиск и нови опити със същата примамка.",
           },
           {
             id: "ask_colleagues_first",
@@ -745,7 +745,7 @@ async function seedScenario(db) {
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Добро решение. Потърси независимо потвърждение от други хора в отдела, вместо да се довериш на съмнителния линк.",
+              "Добро решение. Потърсихте независимо потвърждение от други хора в отдела, вместо да се доверите на съмнителния линк.",
           },
         ],
       },
@@ -764,14 +764,14 @@ async function seedScenario(db) {
     title: "Аудит: повторно попълване на формуляр за заплата",
     description:
       "Служителят трябва да разпознае късен phishing опит чрез спешност, страх за депозита и съмнителен линк за повторно попълване на данни.",
-    personaName: "Maria D.",
+    personaName: "Maria Dimitrova",
     personaRole: "HR",
-    riskWeight: 30,
+    riskWeight: 40,
     rootNodeId: "start",
     nodes: [
       {
         id: "start",
-        speaker: "Maria D.",
+        speaker: "Maria",
         messages: [
           "Здрасти, съжалявам, че те занимавам толкова късно, но тъкмо завършвах одита за следващите заплати и изглежда системата не ти е запазила новия формуляр.",
           "Можеш ли да си го попълниш отново?",
@@ -792,7 +792,7 @@ async function seedScenario(db) {
             meMessages: [
               "Много е късно вече, ще ти го пратя утре.",
             ],
-            riskDelta: 9,
+            riskDelta: 10,
             nextNodeId: "late_night_pressure",
           },
           {
@@ -801,12 +801,12 @@ async function seedScenario(db) {
             meMessages: [
               "Няма проблем, сега ще го попълня.",
             ],
-            riskDelta: 30,
+            riskDelta: 40,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Прие късното и спешно искане без независимо потвърждение. Така attacker-ът лесно може да те насочи към фалшив формуляр за чувствителни данни.",
+              "Приехте късното и спешно искане без независимо потвърждение. Така атакуващият лесно може да Ви насочи към фалшив формуляр за чувствителни данни.",
           },
           {
             id: "cannot_help",
@@ -814,17 +814,17 @@ async function seedScenario(db) {
             meMessages: [
               "Не мога да ти помогна.",
             ],
-            riskDelta: 3,
+            riskDelta: 5,
             nextNodeId: "late_night_pressure",
           },
         ],
       },
       {
         id: "late_night_pressure",
-        speaker: "Maria D.",
+        speaker: "Maria",
         messages: [
-          "Моля те, направи го още тази вечер, понеже системата може да не ти пусне депозита изобщо.",
-          "Попълни си направо данните тук: link.che",
+          "Моля те, направи го още сега, понеже системата може да не ти пусне депозита изобщо.",
+          "Попълни си направо данните тук: employee-salary-portal.net",
         ],
         options: [
           {
@@ -838,7 +838,7 @@ async function seedScenario(db) {
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Добра реакция. Разпозна съмнителния линк и натиска за спешност, без да въвеждаш данни в непотвърден портал.",
+              "Добра реакция. Разпознахте съмнителния линк и натиска за спешност, без да въвеждате данни в непотвърден портал.",
           },
           {
             id: "thanks_just_in_time",
@@ -846,12 +846,12 @@ async function seedScenario(db) {
             meMessages: [
               "Мерси, че ми каза навреме. Можеше да стане беля.",
             ],
-            riskDelta: 30,
+            riskDelta: 40,
             outcome: "failed",
             feedbackKind: "fail",
             feedbackTitle: "FAILED",
             feedbackText:
-              "Повярва на спешния сценарий и прие линка като легитимен. Това отваря път към кражба на payroll и лични данни.",
+              "Повярвахте на спешния сценарий и приехте линка като легитимен. Това отваря път към кражба на payroll и лични данни.",
           },
           {
             id: "already_have_email_confirmation",
@@ -859,12 +859,12 @@ async function seedScenario(db) {
             meMessages: [
               "Имам потвърждение през мейла, трябва вече да имаш тази информация.",
             ],
-            riskDelta: 4,
+            riskDelta: 5,
             outcome: "success",
             feedbackKind: "success",
             feedbackTitle: "SUCCESS",
             feedbackText:
-              "Прилична реакция. Потърси потвърждение през друг канал, вместо да следваш директно линка, макар че можеше още по-ясно да откажеш.",
+              "Добра реакция. Потърсихте потвърждение през друг канал, вместо да следвате директно линка, въпреки че можеше още по-ясно да откажете.",
           },
         ],
       },

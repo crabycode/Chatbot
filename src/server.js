@@ -93,6 +93,12 @@ async function startServer() {
     next();
   });
 
+  function getScenarioQuery() {
+    return config.scenarioCodeFilter.length
+      ? { code: { $in: config.scenarioCodeFilter } }
+      : {};
+  }
+
   async function getActiveSession(req) {
     if (!req.currentUser) {
       return null;
@@ -116,7 +122,11 @@ async function startServer() {
   }
 
   async function getOrderedScenarios() {
-    return db.collection("scenarios").find({}).sort({ order: 1, code: 1 }).toArray();
+    return db.collection("scenarios").find(getScenarioQuery()).sort({ order: 1, code: 1 }).toArray();
+  }
+
+  async function countAvailableScenarios() {
+    return db.collection("scenarios").countDocuments(getScenarioQuery());
   }
 
   async function getCurrentScenario(sessionDoc) {
@@ -201,7 +211,7 @@ async function startServer() {
     return renderPage(res, "dashboard", {
       activeSession,
       latestReport,
-      totalScenarios: await db.collection("scenarios").countDocuments({}),
+      totalScenarios: await countAvailableScenarios(),
     });
   });
 
