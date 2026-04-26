@@ -21,6 +21,12 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
+const SCENARIO_TIER_SELECTION = [
+  { tier: "high", count: 1 },
+  { tier: "medium", count: 2 },
+  { tier: "low", count: 2 },
+];
+const ACTIVE_SCENARIO_TIERS = SCENARIO_TIER_SELECTION.map(({ tier }) => tier);
 
 
 function toObjectId(value) {
@@ -44,6 +50,43 @@ function saveSessionAndRedirect(req, res, redirectPath) {
 
     res.redirect(redirectPath);
   });
+}
+
+
+function shuffleArray(items) {
+  const shuffled = [...items];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+
+  return shuffled;
+}
+
+
+function selectScenariosForTest(allScenarios) {
+  const scenariosByTier = Object.fromEntries(
+    ACTIVE_SCENARIO_TIERS.map((tier) => [tier, []]),
+  );
+
+  for (const scenario of allScenarios) {
+    if (ACTIVE_SCENARIO_TIERS.includes(scenario.scenarioTier)) {
+      scenariosByTier[scenario.scenarioTier].push(scenario);
+    }
+  }
+
+  for (const { tier, count } of SCENARIO_TIER_SELECTION) {
+    if (scenariosByTier[tier].length < count) {
+      throw new Error(`Not enough scenarios in tier "${tier}".`);
+    }
+  }
+
+  const selectedScenarios = SCENARIO_TIER_SELECTION.flatMap(({ tier, count }) =>
+    shuffleArray(scenariosByTier[tier]).slice(0, count),
+  );
+
+  return shuffleArray(selectedScenarios);
 }
 
 
@@ -93,12 +136,6 @@ async function startServer() {
     next();
   });
 
-  function getScenarioQuery() {
-    return config.scenarioCodeFilter.length
-      ? { code: { $in: config.scenarioCodeFilter } }
-      : {};
-  }
-
   async function getActiveSession(req) {
     if (!req.currentUser) {
       return null;
@@ -121,12 +158,20 @@ async function startServer() {
     return sessionDoc;
   }
 
-  async function getOrderedScenarios() {
-    return db.collection("scenarios").find(getScenarioQuery()).sort({ order: 1, code: 1 }).toArray();
+  function getScenarioPoolQuery() {
+    return {
+      scenarioTier: {
+        $in: ACTIVE_SCENARIO_TIERS,
+      },
+    };
+  }
+
+  async function getScenarioPool() {
+    return db.collection("scenarios").find(getScenarioPoolQuery()).sort({ order: 1, code: 1 }).toArray();
   }
 
   async function countAvailableScenarios() {
-    return db.collection("scenarios").countDocuments(getScenarioQuery());
+    return db.collection("scenarios").countDocuments(getScenarioPoolQuery());
   }
 
   async function getCurrentScenario(sessionDoc) {
@@ -145,6 +190,7 @@ async function startServer() {
       appName: config.appName,
       currentUser: res.locals.currentUser,
       passThresholdPercentage,
+      hasActiveInProgressTest: false,
       error: hasExplicitError ? params.error : res.locals.flashError,
       ...params,
     });
@@ -194,6 +240,9 @@ async function startServer() {
     }
 
     const activeSession = await getActiveSession(req);
+    const hasActiveInProgressTest = Boolean(
+      activeSession && activeSession.status === "in_progress",
+    );
     const latestCompleted = await db.collection("test_sessions").findOne(
       {
         userId: req.currentUser._id,
@@ -210,6 +259,7 @@ async function startServer() {
 
     return renderPage(res, "dashboard", {
       activeSession,
+      hasActiveInProgressTest,
       latestReport,
       totalScenarios: await countAvailableScenarios(),
     });
@@ -220,8 +270,8 @@ async function startServer() {
       return res.redirect("/login");
     }
 
-    const scenarios = await getOrderedScenarios();
-    if (!scenarios.length) {
+    const scenarioPool = await getScenarioPool();
+    if (!scenarioPool.length) {
       return renderPage(res, "dashboard", {
         activeSession: null,
         latestReport: null,
@@ -233,14 +283,16 @@ async function startServer() {
     let sessionDoc;
 
     try {
+      const scenarios = selectScenariosForTest(scenarioPool);
       sessionDoc = buildTestSession(req.currentUser._id, scenarios);
     } catch (error) {
       console.error("Failed to start test session:", error);
       return renderPage(res, "dashboard", {
         activeSession: null,
         latestReport: null,
-        totalScenarios: scenarios.length,
-        error: "Има проблем с конфигурацията на тестовите сценарии.",
+        totalScenarios: scenarioPool.length,
+        error:
+          "Има проблем с конфигурацията на тестовите сценарии. Нужни са 1 high, 2 medium и 2 low сценария.",
       });
     }
 

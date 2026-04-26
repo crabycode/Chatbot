@@ -33,7 +33,11 @@
     <% if (currentUser) { %>
     <nav class="topbar-nav">
       <a href="/dashboard" class="ghost-link">Начало</a>
+      <% if (hasActiveInProgressTest) { %>
+      <span class="ghost-link is-disabled" aria-disabled="true">Отчет</span>
+      <% } else { %>
       <a href="/report" class="ghost-link">Отчет</a>
+      <% } %>
       <form method="post" action="/logout">
         <button type="submit" class="ghost-button">Изход</button>
       </form>

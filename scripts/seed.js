@@ -29,6 +29,7 @@ async function seedScenario(db) {
     personaName: "Petar Zhelev",
     personaRole: "CEO",
     riskWeight: 40,
+    scenarioTier: "medium",
     rootNodeId: "start",
     nodes: [
       {
@@ -199,6 +200,7 @@ async function seedScenario(db) {
     personaName: "Spas Galabov",
     personaRole: "ex-Finance Department",
     riskWeight: 30,
+    scenarioTier: "low",
     rootNodeId: "start",
     nodes: [
       {
@@ -471,13 +473,14 @@ async function seedScenario(db) {
     personaName: "Ivan Ivanov",
     personaRole: "ICT",
     riskWeight: 40,
+    scenarioTier: "medium",
     rootNodeId: "start",
     nodes: [
       {
         id: "start",
         speaker: "Ivan",
         messages: [
-          "Системата ми дава известие, че си сте влезли от нов IP адрес.",
+          "Системата ми дава известие, че сте влезли от нов IP адрес.",
           "Нужно ми е да си потвърдите данните възможно най-скоро.",
         ],
         options: [
@@ -648,6 +651,7 @@ async function seedScenario(db) {
     personaName: "Maria Dimitrova",
     personaRole: "HR",
     riskWeight: 30,
+    scenarioTier: "low",
     rootNodeId: "start",
     nodes: [
       {
@@ -767,6 +771,7 @@ async function seedScenario(db) {
     personaName: "Maria Dimitrova",
     personaRole: "HR",
     riskWeight: 40,
+    scenarioTier: "medium",
     rootNodeId: "start",
     nodes: [
       {
@@ -886,6 +891,7 @@ async function seedScenario(db) {
     personaName: "Stefan Anastasov",
     personaRole: "IT Department",
     riskWeight: 50,
+    scenarioTier: "high",
     rootNodeId: "start",
     nodes: [
       {
@@ -1024,6 +1030,7 @@ async function seedScenario(db) {
     personaName: "Maria Dimitrova",
     personaRole: "Human Resources",
     riskWeight: 40,
+    scenarioTier: "medium",
     rootNodeId: "start",
     nodes: [
       {
@@ -1165,6 +1172,7 @@ async function seedScenario(db) {
     personaName: "Petar Zhelev",
     personaRole: "CEO",
     riskWeight: 50,
+    scenarioTier: "high",
     rootNodeId: "start",
     nodes: [
       {

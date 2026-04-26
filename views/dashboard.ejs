@@ -41,7 +41,9 @@
       Последният тест е с <%= latestReport.correctAnswers %>/<%= latestReport.totalScenarios %>
       правилни отговори и риск индекс от <%= latestReport.riskPercentage %>%.
     </p>
+    <% if (!hasActiveInProgressTest) { %>
     <a href="/report" class="ghost-link">Отвори report</a>
+    <% } %>
     <% } else { %>
     <h2>Все още няма завършен тест</h2>
     <p>Стартирай първата симулация и ще получиш финален report тук.</p>

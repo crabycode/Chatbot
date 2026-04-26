@@ -17,23 +17,6 @@ function getNumberEnv(name, fallback) {
 }
 
 
-function getListEnv(name) {
-  const rawValue = String(process.env[name] || "").trim();
-  if (!rawValue) {
-    return [];
-  }
-
-  return Array.from(
-    new Set(
-      rawValue
-        .split(",")
-        .map((value) => value.trim())
-        .filter(Boolean),
-    ),
-  );
-}
-
-
 export const config = {
   appName: process.env.APP_NAME || "CYBREACH",
   port: getNumberEnv("PORT", 3000),
@@ -44,6 +27,5 @@ export const config = {
     process.env.SECRET_KEY ||
     "change-me-before-production",
   passThreshold: getNumberEnv("PASS_THRESHOLD", 0.7),
-  scenarioCodeFilter: getListEnv("SCENARIO_CODES"),
   rootDir,
 };

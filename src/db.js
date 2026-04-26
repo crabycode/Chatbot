@@ -11,6 +11,7 @@ async function ensureIndexes(db) {
   await db.collection("users").createIndex({ username: 1 }, { unique: true });
   await db.collection("scenarios").createIndex({ code: 1 }, { unique: true });
   await db.collection("scenarios").createIndex({ order: 1, code: 1 });
+  await db.collection("scenarios").createIndex({ scenarioTier: 1, order: 1, code: 1 });
   await db.collection("test_sessions").createIndex({ userId: 1, startedAt: -1 });
 }
 
