@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { ObjectId } from "mongodb";
 
 import { config } from "./config.js";
-import { connectToDatabase, getDatabase } from "./db.js";
+import { closeDatabase, connectToDatabase, getDatabase } from "./db.js";
 import { verifyPassword } from "./services/authService.js";
 import {
   advanceWithOption,
@@ -447,13 +447,34 @@ async function startServer() {
     });
   });
 
-  app.listen(config.port, () => {
+  const server = app.listen(config.port, () => {
     console.log(`${config.appName} is running on http://localhost:${config.port}`);
+  });
+
+  server.on("error", async (error) => {
+    if (error.code === "EADDRINUSE") {
+      console.error(
+        `Port ${config.port} is already in use. Stop the existing server process or change PORT in .env.`,
+      );
+    } else {
+      console.error("Failed to start HTTP server:", error);
+    }
+
+    await closeDatabase().catch((closeError) => {
+      console.error("Failed to close database after server startup error:", closeError);
+    });
+    process.exit(1);
   });
 }
 
 
 startServer().catch((error) => {
   console.error("Failed to start the server:", error);
-  process.exit(1);
+  closeDatabase()
+    .catch((closeError) => {
+      console.error("Failed to close database after startup failure:", closeError);
+    })
+    .finally(() => {
+      process.exit(1);
+    });
 });

@@ -1,63 +1,209 @@
 <%- include("partials/head", { title: "Final Report" }) %>
 <%- include("partials/header") %>
 
-<section class="report-layout">
-  <div class="panel report-hero">
-    <span class="eyebrow">Final report</span>
-    <h2><%= report.passed ? "Тестът е преминат успешно" : "Тестът е преминат неуспешно" %></h2>
-    <p>
-      Успеваемост: <%= report.correctAnswers %>/<%= report.totalScenarios %> правилни сценария
-      (<%= report.successRatio %>%).
-      Нужно е минимум <%= report.passThreshold %>% за успешно преминаване.
-    </p>
+<%
+const finishedAtLabel = sessionDoc.finishedAt
+  ? new Date(sessionDoc.finishedAt).toLocaleString("bg-BG", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    })
+  : "В процес";
+%>
 
-    <div class="stats-row">
-      <div class="stat-card">
-        <span>Risk score</span>
-        <strong><%= report.riskPercentage %>%</strong>
+<section class="report-layout report-layout-v2">
+  <div class="report-main-column">
+    <article class="panel report-overview-panel">
+      <div class="report-overview-copy">
+        <span class="eyebrow">Report</span>
+        <h2><%= report.passed ? "Тестът е преминат успешно" : "Тестът има нужда от подобрение" %></h2>
       </div>
-      <div class="stat-card">
-        <span>Correct</span>
-        <strong><%= report.correctAnswers %></strong>
-      </div>
-      <div class="stat-card">
-        <span>Incorrect</span>
-        <strong><%= report.incorrectAnswers %></strong>
-      </div>
-    </div>
 
-    <p class="muted">
-      По-нисък risk score е по-добър. Той показва колко рискови решения е взел
-      служителят спрямо важността на казусите.
-    </p>
+      <div class="report-overview-grid">
+        <div class="report-identity-card">
+          <span class="eyebrow">Summary</span>
+          <div class="report-identity-list">
+            <div class="report-identity-item">
+              <span>Име</span>
+              <strong><%= currentUser.fullName %></strong>
+            </div>
+            <div class="report-identity-item">
+              <span>Позиция</span>
+              <strong><%= currentUser.role %></strong>
+            </div>
+            <div class="report-identity-item">
+              <span>Завършени сценарии</span>
+              <strong><%= report.correctAnswers %> successful / <%= report.incorrectAnswers %> failed</strong>
+            </div>
+            <div class="report-identity-item">
+              <span>Генериран на</span>
+              <strong><%= finishedAtLabel %></strong>
+            </div>
+          </div>
+        </div>
 
-    <div class="action-row">
-      <a href="/dashboard" class="secondary-button">Назад към dashboard</a>
-      <form method="post" action="/test/start">
-        <button type="submit" class="primary-button">Стартирай нов тест</button>
-      </form>
-    </div>
+        <div class="report-readiness-card report-readiness-card-<%= report.overallReadinessTone %>">
+          <span class="eyebrow">Overall cyberreadiness score</span>
+          <div class="report-readiness-score">
+            <strong><%= report.overallReadinessScore !== null ? report.overallReadinessScore : "N/A" %></strong>
+            <span>/100</span>
+          </div>
+          <p class="report-score-label"><%= report.overallReadinessLabel %></p>
+
+          <div class="stats-row report-mini-stats">
+            <div class="stat-card">
+              <span>Risk score</span>
+              <strong><%= report.riskPercentage %>%</strong>
+            </div>
+            <div class="stat-card">
+              <span>Success rate</span>
+              <strong><%= report.successRatio %>%</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="report-callout-row">
+        <div class="report-callout">
+          <span class="report-callout-title">Result summary</span>
+          <strong><%= report.correctAnswers %>/<%= report.totalScenarios %> правилни</strong>
+          <p>Успеваемост: <%= report.successRatio %>% при минимум <%= report.passThreshold %>% за успешно преминаване.</p>
+        </div>
+        <div class="report-callout report-insights-panel">
+          <span class="report-callout-title">Key insights</span>
+          <strong><%= report.keyHighlight.title %></strong>
+          <p class="insight-item insight-item-<%= report.keyHighlight.tone %>">
+            <%= report.keyHighlight.text %>
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel report-section-panel">
+      <span class="eyebrow">Overview metrics</span>
+      <h2>Обща киберготовност</h2>
+      <p class="muted">
+        Всяка метрика е изчислена по текущия тест.
+      </p>
+
+      <div class="report-metric-grid">
+        <% for (const metric of report.readinessMetrics) { %>
+        <article class="metric-card metric-card-<%= metric.scoreTone %>">
+          <div class="metric-card-header">
+            <div>
+              <h3><%= metric.label %></h3>
+              <p><%= metric.helperText %></p>
+            </div>
+            <div class="metric-score-box">
+              <strong><%= metric.score !== null ? metric.score : "N/A" %></strong>
+              <span>/100</span>
+            </div>
+          </div>
+
+          <div class="metric-progress-track">
+            <span
+              class="metric-progress-fill metric-progress-fill-<%= metric.scoreTone %>"
+              style="width: <%= metric.score !== null ? metric.score : 0 %>%"
+            ></span>
+          </div>
+        </article>
+        <% } %>
+      </div>
+    </article>
+
+    <article class="panel report-section-panel">
+      <span class="eyebrow">Human-factor susceptibility</span>
+      <h2>Поведенчески фактори</h2>
+      <p class="muted">
+        Метриките тук показват доколко различни фактори като авторитет, спешност и натиск
+        влияят върху поведението в теста. По-нисък резултат = по-висока устойчивост.
+      </p>
+
+      <div class="report-metric-grid report-metric-grid-compact">
+        <% for (const metric of report.susceptibilityMetrics) { %>
+        <article class="metric-card metric-card-<%= metric.scoreTone %>">
+          <div class="metric-card-header">
+            <div>
+              <h3><%= metric.label %> (0-100)</h3>
+              <p><%= metric.helperText %></p>
+            </div>
+            <div class="metric-score-box">
+              <strong><%= metric.score !== null ? metric.score : "N/A" %></strong>
+              <span>/100</span>
+            </div>
+          </div>
+
+          <div class="metric-progress-track">
+            <span
+              class="metric-progress-fill metric-progress-fill-<%= metric.scoreTone %>"
+              style="width: <%= metric.score !== null ? metric.score : 0 %>%"
+            ></span>
+          </div>
+        </article>
+        <% } %>
+      </div>
+      <div class="action-row">
+        <a href="/dashboard" class="secondary-button">Назад към dashboard</a>
+        <form method="post" action="/test/start">
+          <button type="submit" class="primary-button">Стартирай нов тест</button>
+        </form>
+      </div>
+    </article>
   </div>
 
-  <div class="panel">
-    <span class="eyebrow">Scenario breakdown</span>
-    <div class="scenario-list">
-      <% for (const item of sessionDoc.answeredScenarios) { %>
-      <article class="scenario-item">
-        <div>
-          <h3><%= item.scenarioTitle %></h3>
-          <p class="muted"><%= item.feedbackText %></p>
-        </div>
-        <div class="scenario-item-meta">
-          <span class="<%= item.status === 'success' ? 'pill-success' : 'pill-fail' %>">
-            <%= item.status.toUpperCase() %>
-          </span>
-          <span>Risk: <%= item.riskIncurred %>/<%= item.maxRisk %></span>
-        </div>
-      </article>
-      <% } %>
-    </div>
-  </div>
+  <aside class="report-sidebar-column">
+    <article class="panel report-sidebar">
+      <span class="eyebrow">Scenario breakdown</span>
+      <h2>Разбивка по сценарии</h2>
+      <p class="muted">
+        Подробна разбивка на резултатите с кратка рецензия за всяка симулация.
+      </p>
+
+      <div class="scenario-list">
+        <% for (const item of sessionDoc.answeredScenarios) { %>
+        <article class="scenario-item">
+          <div>
+            <span class="scenario-code-label"><%= item.scenarioCode %></span>
+            <h3><%= item.scenarioTitle %></h3>
+            <p class="muted"><%= item.feedbackText %></p>
+          </div>
+          <div class="scenario-item-meta">
+            <span class="<%= item.status === 'success' ? 'pill-success' : 'pill-fail' %>">
+              <%= item.status.toUpperCase() %>
+            </span>
+            <span>Risk: <%= item.riskIncurred %>/<%= item.maxRisk %></span>
+          </div>
+        
+        </article>
+        <% } %>
+      </div>
+    </article>
+
+    <article class="panel report-guides-panel report-guides-panel-sidebar">
+      <span class="eyebrow">Recommended guides</span>
+      <h2>Препоръчани обучения</h2>
+      <p class="muted">
+        Placeholder блок за гайдовете.
+      </p>
+
+      <div class="guide-card-grid guide-card-grid-sidebar">
+        <article class="guide-card">
+          <span class="guide-card-status">Coming soon</span>
+          <h3>Verification & escalation</h3>
+          <p>Подходящо за CEO fraud, urgent access и съмнителни искания от авторитет.</p>
+        </article>
+        <article class="guide-card">
+          <span class="guide-card-status">Coming soon</span>
+          <h3>Personal data handling</h3>
+          <p>Фокус върху HR phishing, лични данни и сигурно валидиране на заявките.</p>
+        </article>
+        <article class="guide-card">
+          <span class="guide-card-status">Coming soon</span>
+          <h3>Finance request controls</h3>
+          <p>Полезно за payroll, ex-employee и IBAN-related сценарии с финансов риск.</p>
+        </article>
+      </div>
+    </article>
+  </aside>
 </section>
 
 <%- include("partials/footer") %>

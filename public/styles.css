@@ -856,6 +856,349 @@ html.js-enabled .choices-grid:not(.is-waiting) .choice-card:nth-child(4) {
   white-space: nowrap;
 }
 
+.report-layout-v2 {
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.92fr);
+  align-items: stretch;
+}
+
+.report-main-column {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.report-sidebar-column {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1.5rem;
+  min-height: 100%;
+  height: 100%;
+}
+
+.report-overview-panel {
+  background: var(--panel);
+}
+
+.report-overview-copy {
+  max-width: 780px;
+}
+
+.report-overview-grid,
+.report-callout-row,
+.guide-card-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.report-overview-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1.35rem;
+}
+
+.report-identity-card,
+.report-readiness-card,
+.report-callout,
+.metric-card,
+.guide-card {
+  background: var(--panel-strong);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+}
+
+.report-identity-card,
+.report-readiness-card,
+.report-callout,
+.metric-card,
+.guide-card {
+  padding: 1.25rem;
+}
+
+.report-identity-list {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 0.8rem;
+}
+
+.report-identity-item {
+  display: grid;
+  gap: 0.24rem;
+}
+
+.report-identity-item span,
+.report-callout-title,
+.metric-card p,
+.metric-meta-row,
+.guide-card-status,
+.scenario-code-label {
+  color: var(--muted);
+}
+
+.report-identity-item span,
+.report-callout-title,
+.guide-card-status,
+.scenario-code-label {
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.report-identity-item strong,
+.report-callout strong,
+.guide-card h3 {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.report-readiness-card {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.report-readiness-card-good {
+  box-shadow: 0 20px 46px rgba(17, 120, 101, 0.12);
+}
+
+.report-readiness-card-watch {
+  box-shadow: 0 20px 46px rgba(198, 121, 38, 0.12);
+}
+
+.report-readiness-card-risk {
+  box-shadow: 0 20px 46px rgba(209, 52, 91, 0.12);
+}
+
+.report-readiness-score {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.report-readiness-score strong {
+  font-size: clamp(3rem, 5vw, 4.4rem);
+  line-height: 0.92;
+}
+
+.report-readiness-score span {
+  font-size: 1rem;
+  color: var(--muted);
+  padding-bottom: 0.5rem;
+}
+
+.report-score-label {
+  margin: 0;
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--text) !important;
+}
+
+.report-mini-stats {
+  margin-top: 0;
+}
+
+.report-mini-stats .stat-card {
+  min-width: 0;
+}
+
+.report-callout-row {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.report-callout {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.report-insights-panel {
+  align-content: start;
+}
+
+.report-callout p,
+.guide-card p {
+  margin: 0;
+}
+
+.insight-item {
+  padding: 0.85rem 0.95rem;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  line-height: 1.5;
+}
+
+.insight-item-good {
+  background: rgba(17, 120, 101, 0.12);
+  border-color: rgba(17, 120, 101, 0.18);
+}
+
+.insight-item-watch {
+  background: rgba(255, 186, 92, 0.1);
+  border-color: rgba(255, 186, 92, 0.16);
+}
+
+.insight-item-risk {
+  background: rgba(209, 52, 91, 0.1);
+  border-color: rgba(209, 52, 91, 0.16);
+}
+
+.report-section-panel h2,
+.report-sidebar h2,
+.report-guides-panel h2 {
+  margin-bottom: 0.4rem;
+}
+
+.report-metric-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.15rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.report-metric-grid-compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.metric-card {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.metric-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.metric-card-header h3,
+.guide-card h3 {
+  margin: 0 0 0.3rem;
+}
+
+.metric-card-header p {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.45;
+}
+
+.metric-score-box {
+  flex-shrink: 0;
+  display: grid;
+  justify-items: end;
+}
+
+.metric-score-box strong {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.metric-score-box span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.metric-progress-track {
+  position: relative;
+  height: 0.68rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(99, 112, 138, 0.13);
+}
+
+.metric-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.metric-progress-fill-good {
+  background: linear-gradient(90deg, #7ae3c7, #20ba88);
+}
+
+.metric-progress-fill-watch {
+  background: linear-gradient(90deg, #ffd694, #ffad42);
+}
+
+.metric-progress-fill-risk {
+  background: linear-gradient(90deg, #ffb0c0, #d1345b);
+}
+
+.metric-progress-fill-neutral {
+  background: linear-gradient(90deg, rgba(99, 112, 138, 0.35), rgba(99, 112, 138, 0.55));
+}
+
+.guide-card-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 1.15rem;
+}
+
+.guide-card-grid-sidebar {
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+  margin-top: 0.9rem;
+}
+
+.guide-card {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.report-guides-panel-sidebar h2 {
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
+}
+
+.report-guides-panel-sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.report-guides-panel-sidebar > .muted {
+  margin-bottom: 0;
+}
+
+.report-guides-panel-sidebar .guide-card-grid {
+  flex: 1;
+  align-content: start;
+}
+
+.report-guides-panel-sidebar .guide-card {
+  padding: 1rem 1.05rem;
+  gap: 0.5rem;
+  border-radius: 18px;
+}
+
+.report-guides-panel-sidebar .guide-card h3 {
+  font-size: 1.02rem;
+  margin: 0;
+}
+
+.report-guides-panel-sidebar .guide-card p {
+  font-size: 0.96rem;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.report-guides-panel-sidebar .guide-card-status {
+  padding: 0.2rem 0.55rem;
+  font-size: 0.74rem;
+}
+
+.guide-card-status {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.28rem 0.62rem;
+  border-radius: 999px;
+  background: var(--ghost-bg);
+  border: 1px solid var(--line);
+}
+
+.scenario-code-label {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+}
+
 .pill-success,
 .pill-fail {
   display: inline-flex;
@@ -1019,6 +1362,44 @@ html.js-enabled .choices-grid:not(.is-waiting) .choice-card:nth-child(4) {
 
   .test-progress-label {
     flex-wrap: wrap;
+  }
+
+  .report-sidebar {
+    position: static;
+  }
+
+  .report-overview-grid,
+  .report-callout-row,
+  .report-metric-grid,
+  .report-metric-grid-compact,
+  .guide-card-grid,
+  .report-sidebar-column {
+    grid-template-columns: 1fr;
+  }
+
+  .report-sidebar-column {
+    grid-template-rows: auto;
+    min-height: auto;
+    height: auto;
+  }
+
+  .metric-card-header,
+  .scenario-item {
+    flex-direction: column;
+  }
+
+  .metric-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .metric-score-box {
+    justify-items: start;
+  }
+
+  .scenario-item-meta {
+    justify-items: start;
+    white-space: normal;
   }
 }
 
