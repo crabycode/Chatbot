@@ -7,8 +7,8 @@ async function seedUser(db) {
     { username: "worker1" },
     {
       $set: {
-        username: "worker1",
-        passwordHash: await hashPassword("TrainMe123!"),
+        username: "demo.user",
+        passwordHash: await hashPassword("demo"),
         fullName: "Ivan Petrov",
         role: "Security Operations Analyst",
         isActive: true,
