@@ -18,6 +18,10 @@ const finishedAtLabel = sessionDoc.finishedAt
         <h2><%= report.passed ? "Тестът е преминат успешно" : "Тестът има нужда от подобрение" %></h2>
       </div>
 
+      <% if (error) { %>
+      <div class="alert alert-fail"><%= error %></div>
+      <% } %>
+
       <div class="report-overview-grid">
         <div class="report-identity-card">
           <span class="eyebrow">Summary</span>
@@ -172,7 +176,6 @@ const finishedAtLabel = sessionDoc.finishedAt
             </span>
             <span>Risk: <%= item.riskIncurred %>/<%= item.maxRisk %></span>
           </div>
-        
         </article>
         <% } %>
       </div>
@@ -182,25 +185,13 @@ const finishedAtLabel = sessionDoc.finishedAt
       <span class="eyebrow">Recommended guides</span>
       <h2>Препоръчани обучения</h2>
       <p class="muted">
-        Placeholder блок за гайдовете.
+        Отвори подходящ guide директно в платформата, без PDF сваляне.
       </p>
 
       <div class="guide-card-grid guide-card-grid-sidebar">
-        <article class="guide-card">
-          <span class="guide-card-status">Coming soon</span>
-          <h3>Verification & escalation</h3>
-          <p>Подходящо за CEO fraud, urgent access и съмнителни искания от авторитет.</p>
-        </article>
-        <article class="guide-card">
-          <span class="guide-card-status">Coming soon</span>
-          <h3>Personal data handling</h3>
-          <p>Фокус върху HR phishing, лични данни и сигурно валидиране на заявките.</p>
-        </article>
-        <article class="guide-card">
-          <span class="guide-card-status">Coming soon</span>
-          <h3>Finance request controls</h3>
-          <p>Полезно за payroll, ex-employee и IBAN-related сценарии с финансов риск.</p>
-        </article>
+        <% for (const guide of guides) { %>
+        <%- include("partials/guide-card", { guide }) %>
+        <% } %>
       </div>
     </article>
   </aside>

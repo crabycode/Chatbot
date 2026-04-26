@@ -16,6 +16,7 @@ import {
   calculateReport,
   initializeNextScenario,
 } from "./services/testEngine.js";
+import { getGuideBySlug, guides } from "./data/guides.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -189,6 +190,7 @@ async function startServer() {
     return res.render(viewName, {
       appName: config.appName,
       currentUser: res.locals.currentUser,
+      guides,
       passThresholdPercentage,
       hasActiveInProgressTest: false,
       error: hasExplicitError ? params.error : res.locals.flashError,
@@ -262,6 +264,36 @@ async function startServer() {
       hasActiveInProgressTest,
       latestReport,
       totalScenarios: await countAvailableScenarios(),
+    });
+  });
+
+  app.get("/guides", async (req, res) => {
+    if (!req.currentUser) {
+      return res.redirect("/login");
+    }
+
+    return res.redirect("/report");
+  });
+
+  app.get("/guides/:slug", async (req, res) => {
+    if (!req.currentUser) {
+      return res.redirect("/login");
+    }
+
+    const guide = getGuideBySlug(req.params.slug);
+    if (!guide) {
+      req.session.flashError = "Търсеният guide не беше намерен.";
+      return res.redirect("/report");
+    }
+
+    const activeSession = await getActiveSession(req);
+    const hasActiveInProgressTest = Boolean(
+      activeSession && activeSession.status === "in_progress",
+    );
+
+    return renderPage(res, "guide", {
+      guide,
+      hasActiveInProgressTest,
     });
   });
 
@@ -442,6 +474,7 @@ async function startServer() {
     }
 
     return renderPage(res, "report", {
+      guides,
       report: calculateReport(sessionDoc, config.passThreshold),
       sessionDoc,
     });

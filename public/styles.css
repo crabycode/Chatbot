@@ -411,6 +411,18 @@ body,
   align-items: start;
 }
 
+.guide-detail-layout {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.guide-detail-layout {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
 .hero-copy {
   max-width: 760px;
 }
@@ -1141,6 +1153,19 @@ html.js-enabled .choices-grid:not(.is-waiting) .choice-card:nth-child(4) {
   gap: 0.7rem;
 }
 
+.guide-card-copy {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.guide-card-copy h3 {
+  margin: 0;
+}
+
+.guide-card-actions {
+  margin-top: auto;
+}
+
 .report-guides-panel-sidebar h2 {
   font-size: clamp(1.4rem, 2vw, 1.9rem);
 }
@@ -1192,6 +1217,63 @@ html.js-enabled .choices-grid:not(.is-waiting) .choice-card:nth-child(4) {
   border-radius: 999px;
   background: var(--ghost-bg);
   border: 1px solid var(--line);
+}
+
+.guide-lead {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 1.02rem;
+  max-width: 72ch;
+}
+
+.guide-main-column {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.guide-section {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.guide-step-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 0.65rem;
+}
+
+.guide-step-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  padding: 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--panel-strong);
+}
+
+.guide-step-card h3 {
+  margin: 0 0 0.45rem;
+}
+
+.guide-step-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.guide-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 18px;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-weight: 800;
+  letter-spacing: 0.05em;
 }
 
 .scenario-code-label {
@@ -1373,6 +1455,7 @@ html.js-enabled .choices-grid:not(.is-waiting) .choice-card:nth-child(4) {
   .report-metric-grid,
   .report-metric-grid-compact,
   .guide-card-grid,
+  .guide-detail-layout,
   .report-sidebar-column {
     grid-template-columns: 1fr;
   }
@@ -1400,6 +1483,10 @@ html.js-enabled .choices-grid:not(.is-waiting) .choice-card:nth-child(4) {
   .scenario-item-meta {
     justify-items: start;
     white-space: normal;
+  }
+
+  .guide-step-card {
+    grid-template-columns: 1fr;
   }
 }
 

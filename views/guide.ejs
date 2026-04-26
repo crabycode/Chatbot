@@ -1,0 +1,28 @@
+<%- include("partials/head", { title: guide.title }) %>
+<%- include("partials/header") %>
+
+<section class="guide-detail-layout">
+  <div class="guide-main-column">
+    <article class="panel guide-section">
+      <span class="guide-card-status"><%= guide.estimatedReadTime %></span>
+      <h2><%= guide.title %></h2>
+      <p class="guide-lead"><%= guide.summary %></p>
+
+      <div class="guide-step-list">
+        <% guide.points.forEach((item, index) => { %>
+        <article class="guide-step-card">
+          <span class="guide-step-number">0<%= index + 1 %></span>
+          <div>
+            <h3><%= item.title %></h3>
+            <p><%= item.body %></p>
+          </div>
+        </article>
+        <% }) %>
+      </div>
+
+      <div class="action-row">
+        <a href="/report" class="secondary-button">Назад към report</a>
+      </div>
+    </article>
+  </div>
+</section>

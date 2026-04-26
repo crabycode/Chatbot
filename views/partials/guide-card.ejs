@@ -1,0 +1,12 @@
+<article class="guide-card">
+  <span class="guide-card-status"><%= guide.estimatedReadTime %></span>
+
+  <div class="guide-card-copy">
+    <h3><%= guide.title %></h3>
+    <p><%= guide.summary %></p>
+  </div>
+
+  <div class="guide-card-actions">
+    <a href="/guides/<%= guide.slug %>" class="secondary-button">Отвори guide</a>
+  </div>
+</article>
