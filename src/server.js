@@ -22,12 +22,11 @@ import { getGuideBySlug, guides } from "./data/guides.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
-const SCENARIO_TIER_SELECTION = [
-  { tier: "high", count: 1 },
-  { tier: "medium", count: 2 },
-  { tier: "low", count: 2 },
+const FIXED_TEST_SCENARIO_CODES = [
+  "ex-employee-001",
+  "ceo-fraud-002",
+  "personal-data-001",
 ];
-const ACTIVE_SCENARIO_TIERS = SCENARIO_TIER_SELECTION.map(({ tier }) => tier);
 
 
 function toObjectId(value) {
@@ -54,40 +53,20 @@ function saveSessionAndRedirect(req, res, redirectPath) {
 }
 
 
-function shuffleArray(items) {
-  const shuffled = [...items];
-
-  for (let index = shuffled.length - 1; index > 0; index -= 1) {
-    const swapIndex = Math.floor(Math.random() * (index + 1));
-    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
-  }
-
-  return shuffled;
-}
-
-
 function selectScenariosForTest(allScenarios) {
-  const scenariosByTier = Object.fromEntries(
-    ACTIVE_SCENARIO_TIERS.map((tier) => [tier, []]),
+  const scenariosByCode = new Map(
+    allScenarios.map((scenario) => [scenario.code, scenario]),
   );
 
-  for (const scenario of allScenarios) {
-    if (ACTIVE_SCENARIO_TIERS.includes(scenario.scenarioTier)) {
-      scenariosByTier[scenario.scenarioTier].push(scenario);
+  return FIXED_TEST_SCENARIO_CODES.map((scenarioCode) => {
+    const scenario = scenariosByCode.get(scenarioCode);
+
+    if (!scenario) {
+      throw new Error(`Required scenario "${scenarioCode}" was not found.`);
     }
-  }
 
-  for (const { tier, count } of SCENARIO_TIER_SELECTION) {
-    if (scenariosByTier[tier].length < count) {
-      throw new Error(`Not enough scenarios in tier "${tier}".`);
-    }
-  }
-
-  const selectedScenarios = SCENARIO_TIER_SELECTION.flatMap(({ tier, count }) =>
-    shuffleArray(scenariosByTier[tier]).slice(0, count),
-  );
-
-  return shuffleArray(selectedScenarios);
+    return scenario;
+  });
 }
 
 
@@ -161,18 +140,14 @@ async function startServer() {
 
   function getScenarioPoolQuery() {
     return {
-      scenarioTier: {
-        $in: ACTIVE_SCENARIO_TIERS,
+      code: {
+        $in: FIXED_TEST_SCENARIO_CODES,
       },
     };
   }
 
   async function getScenarioPool() {
-    return db.collection("scenarios").find(getScenarioPoolQuery()).sort({ order: 1, code: 1 }).toArray();
-  }
-
-  async function countAvailableScenarios() {
-    return db.collection("scenarios").countDocuments(getScenarioPoolQuery());
+    return db.collection("scenarios").find(getScenarioPoolQuery()).toArray();
   }
 
   async function getCurrentScenario(sessionDoc) {
@@ -263,7 +238,6 @@ async function startServer() {
       activeSession,
       hasActiveInProgressTest,
       latestReport,
-      totalScenarios: await countAvailableScenarios(),
     });
   });
 
@@ -307,7 +281,6 @@ async function startServer() {
       return renderPage(res, "dashboard", {
         activeSession: null,
         latestReport: null,
-        totalScenarios: 0,
         error: "Няма налични сценарии в базата данни.",
       });
     }
@@ -322,9 +295,8 @@ async function startServer() {
       return renderPage(res, "dashboard", {
         activeSession: null,
         latestReport: null,
-        totalScenarios: scenarioPool.length,
         error:
-          "Има проблем с конфигурацията на тестовите сценарии. Нужни са 1 high, 2 medium и 2 low сценария.",
+          "Има проблем с конфигурацията на тестовите сценарии. Нужни са ex-employee-001, ceo-fraud-002 и personal-data-001.",
       });
     }
 

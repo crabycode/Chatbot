@@ -4,13 +4,27 @@ import { hashPassword } from "../src/services/authService.js";
 
 async function seedUser(db) {
   await db.collection("users").updateOne(
-    { username: "worker1" },
+    { username: "demo.user" },
     {
       $set: {
         username: "demo.user",
         passwordHash: await hashPassword("demo"),
         fullName: "Ivan Petrov",
         role: "Security Operations Analyst",
+        isActive: true,
+      },
+    },
+    { upsert: true },
+  );
+
+  await db.collection("users").updateOne(
+    { username: "fam.yo" },
+    {
+      $set: {
+        username: "fam.yo",
+        passwordHash: await hashPassword("123"),
+        fullName: "Test Account",
+        role: "Family",
         isActive: true,
       },
     },
@@ -765,7 +779,7 @@ async function seedScenario(db) {
   const fifthScenario = {
     code: "payroll-audit-001",
     order: 5,
-    title: "Аудит: повторно попълване на формуляр за заплата",
+    title: "Одит: повторно попълване на формуляр за заплата",
     description:
       "Служителят трябва да разпознае късен phishing опит чрез спешност, страх за депозита и съмнителен линк за повторно попълване на данни.",
     personaName: "Maria Dimitrova",
